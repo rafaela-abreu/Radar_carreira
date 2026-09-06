@@ -4,85 +4,462 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Radar da Carreira - Rafaela</title>
-  <link rel="stylesheet" href="css/variables.css">
-  <link rel="stylesheet" href="css/style.css">
+  
+  <!-- Fonte Premium para Interface Moderna -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #0b0d14 0%, #111422 100%);
+      --surface-1: #161a29;
+      --surface-2: #1e2438;
+      --surface-card: #181c2e;
+      --primary: #6366f1;
+      --primary-glow: rgba(99, 102, 241, 0.25);
+      --border: #282f45;
+      --border-highlight: #3b4566;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      
+      --status-success: #10b981;
+      --status-warning: #f59e0b;
+      --status-danger: #ef4444;
+      --status-info: #06b6d4;
+
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 12px;
+    }
+
+    #app-wrapper {
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* 🛰️ HEADER PREMIUM */
+    header {
+      background: var(--surface-1);
+      border: 1px solid var(--border);
+      padding: 16px;
+      border-radius: var(--radius-lg);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .brand-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: 0.5px;
+      background: linear-gradient(90deg, #fff, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .badge-status {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--status-success);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    /* 🧭 NAVEGAÇÃO DE ABAS TIPO MIND NOTE */
+    nav.nav-scroller {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+
+    nav.nav-scroller::-webkit-scrollbar {
+      display: none;
+    }
+
+    .nav-btn {
+      background: var(--surface-1);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 12px 18px;
+      border-radius: var(--radius-md);
+      font-size: 0.85rem;
+      font-weight: 600;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .nav-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+      box-shadow: 0 4px 14px var(--primary-glow);
+    }
+
+    /* 📦 CONTEÚDO DAS ABAS */
+    .tab-pane {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+      animation: fadeIn 0.25s ease-in-out;
+    }
+
+    .tab-pane.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 🚨 CARD DE ALERTA */
+    .alert-card {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(245, 158, 11, 0.05) 100%);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      padding: 16px;
+      border-radius: var(--radius-lg);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .alert-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      color: #fca5a5;
+      font-size: 0.9rem;
+    }
+
+    .match-tag {
+      background: rgba(16, 185, 129, 0.2);
+      color: var(--status-success);
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 800;
+    }
+
+    /* 📊 PAINEL DE INDICADORES (ESTANTE VISUAL) */
+    .section-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-top: 8px;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .metric-card {
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      padding: 16px;
+      border-radius: var(--radius-lg);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .metric-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .metric-value {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    /* 📝 FORMULÁRIOS E DOSSIÊS (MIND NOTE VIBE) */
+    .dossier-card {
+      background: var(--surface-1);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .form-control {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 12px;
+      border-radius: var(--radius-md);
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    .form-control:focus {
+      border-color: var(--primary);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 14px;
+      border-radius: var(--radius-md);
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      box-shadow: 0 4px 14px var(--primary-glow);
+    }
+  </style>
 </head>
 <body>
 
-  <div id="app-container">
+  <div id="app-wrapper">
     
+    <!-- Topo / Header -->
     <header>
-      <h1>🛰️ RADAR DA CARREIRA</h1>
-      <span class="badge badge-high">V1.0 — Ativo</span>
+      <div class="brand-title">
+        <span>🛰️</span> RADAR DA CARREIRA
+      </div>
+      <span class="badge-status">ONLINE</span>
     </header>
 
-    <nav class="nav-tabs">
-      <button class="tab-btn active" onclick="switchTab('dashboard')">🏠 Dashboard</button>
-      <button class="tab-btn" onclick="switchTab('vagas')">💼 Vagas</button>
-      <button class="tab-btn" onclick="switchTab('candidaturas')">🗄️ Candidaturas</button>
-      <button class="tab-btn" onclick="switchTab('curriculo')">📄 Meu Currículo</button>
-      <button class="tab-btn" onclick="switchTab('empresas')">🏢 Empresas</button>
-      <button class="tab-btn" onclick="switchTab('evolucao')">📈 Evolução</button>
+    <!-- Navegação Estilo Caderno / Abas -->
+    <nav class="nav-scroller">
+      <button class="nav-btn active" onclick="openTab(event, 'tab-dashboard')">🏠 Dashboard</button>
+      <button class="nav-btn" onclick="openTab(event, 'tab-vagas')">💼 Dossiê Vagas</button>
+      <button class="nav-btn" onclick="openTab(event, 'tab-candidaturas')">🗄️ Candidaturas</button>
+      <button class="nav-btn" onclick="openTab(event, 'tab-curriculo')">📄 Currículos</button>
+      <button class="nav-btn" onclick="openTab(event, 'tab-empresas')">🏢 Empresas</button>
+      <button class="nav-btn" onclick="openTab(event, 'tab-evolucao')">📈 Evolução</button>
     </nav>
 
-    <section id="dashboard" class="tab-content active">
-      
-      <div class="alert-box">
-        <h3>🚨 Alerta de Compatibilidade</h3>
-        <p><strong>Desenvolvedora Front-End Jr</strong> na <i>Empresa X</i></p>
-        <div>
-          <span class="badge badge-high">92% Compatível</span>
+    <!-- TAB 1: DASHBOARD -->
+    <section id="tab-dashboard" class="tab-pane active">
+      <div class="alert-card">
+        <div class="alert-header">
+          <span>🚨 OPORTUNIDADE DETECTADA</span>
+          <span class="match-tag">92% COMPATÍVEL</span>
         </div>
+        <p><strong>Desenvolvedora Front-End Jr</strong> • Empresa X</p>
+        <p style="font-size:0.8rem; color:var(--text-muted);">Requisitos: HTML, CSS, JavaScript, React, Node.js</p>
       </div>
 
-      <h2>📊 Indicadores do Radar</h2>
-      <div class="card-grid">
-        <div class="card">
-          <h4>📩 Candidaturas Enviadas</h4>
-          <h2>0</h2>
+      <div class="section-title">📊 Visão Geral</div>
+
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <span class="metric-label">📩 Enviadas</span>
+          <span class="metric-value" id="count-enviadas">0</span>
         </div>
-        <div class="card">
-          <h4>🟡 Aguardando Resposta</h4>
-          <h2>0</h2>
+        <div class="metric-card">
+          <span class="metric-label">🟡 Em Análise</span>
+          <span class="metric-value" id="count-analise">0</span>
         </div>
-        <div class="card">
-          <h4>🟢 Entrevistas Agendadas</h4>
-          <h2>0</h2>
+        <div class="metric-card">
+          <span class="metric-label">🟢 Entrevistas</span>
+          <span class="metric-value" id="count-entrevistas">0</span>
         </div>
-        <div class="card">
-          <h4>📚 Tecnologias Prioritárias</h4>
-          <h2>React, Node.js</h2>
+        <div class="metric-card">
+          <span class="metric-label">🎯 Vagas Compatíveis</span>
+          <span class="metric-value" id="count-comp">0</span>
         </div>
       </div>
     </section>
 
-    <section id="vagas" class="tab-content">
-      <h2>💼 Dossiê de Vagas</h2>
-      <p>Área para cadastro e análise detalhada de vagas.</p>
+    <!-- TAB 2: VAGAS -->
+    <section id="tab-vagas" class="tab-pane">
+      <div class="dossier-card">
+        <h3 style="font-size:1rem; font-weight:700;">📂 Cadastrar Dossiê de Vaga</h3>
+        
+        <div class="form-group">
+          <label>Nome da Empresa</label>
+          <input type="text" id="vaga-empresa" class="form-control" placeholder="Ex: Tech Corp">
+        </div>
+
+        <div class="form-group">
+          <label>Cargo da Vaga</label>
+          <input type="text" id="vaga-cargo" class="form-control" placeholder="Ex: Desenvolvedora Front-End Jr">
+        </div>
+
+        <div class="form-group">
+          <label>Modelo de Trabalho</label>
+          <select id="vaga-modelo" class="form-control">
+            <option value="Remoto">Remoto</option>
+            <option value="Híbrido">Híbrido</option>
+            <option value="Presencial">Presencial</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Descrição Original do Anúncio</label>
+          <textarea id="vaga-descricao" class="form-control" rows="4" placeholder="Cole aqui o texto original da vaga..."></textarea>
+        </div>
+
+        <button class="btn-primary" onclick="salvarVaga()">💾 Salvar Dossiê no Radar</button>
+      </div>
+
+      <div id="lista-vagas" style="display:flex; flex-direction:column; gap:12px;"></div>
     </section>
 
-    <section id="candidaturas" class="tab-content">
-      <h2>🗄️ Banco de Candidaturas</h2>
-      <p>Estante visual com o histórico exato do que foi enviado.</p>
+    <!-- TAB 3: CANDIDATURAS -->
+    <section id="tab-candidaturas" class="tab-pane">
+      <div class="dossier-card">
+        <h3 style="font-size:1rem; font-weight:700;">🗄️ Histórico de Candidaturas</h3>
+        <p style="font-size:0.85rem; color:var(--text-muted);">Registro completo do que foi enviado para rastreabilidade.</p>
+        <div id="lista-candidaturas" style="font-size:0.85rem; color:var(--text-muted);">Nenhuma candidatura registrada ainda.</div>
+      </div>
     </section>
 
-    <section id="curriculo" class="tab-content">
-      <h2>📄 Controle de Versões do Currículo</h2>
-      <p>Gerenciamento de versões V1, V2, V3...</p>
+    <!-- TAB 4: CURRÍCULO -->
+    <section id="tab-curriculo" class="tab-pane">
+      <div class="dossier-card">
+        <h3 style="font-size:1rem; font-weight:700;">📄 Versões do Currículo</h3>
+        <p style="font-size:0.85rem; color:var(--text-muted);">Gerencie as versões V1, V2, V3 vinculadas às candidaturas.</p>
+      </div>
     </section>
 
-    <section id="empresas" class="tab-content">
-      <h2>🏢 Banco de Empresas</h2>
-      <p>Perfil detalhado, cultura e faixas salariais das empresas.</p>
+    <!-- TAB 5: EMPRESAS -->
+    <section id="tab-empresas" class="tab-pane">
+      <div class="dossier-card">
+        <h3 style="font-size:1rem; font-weight:700;">🏢 Banco de Empresas</h3>
+        <p style="font-size:0.85rem; color:var(--text-muted);">Dossiê cultural, requisitos recorrentes e faixas salariais.</p>
+      </div>
     </section>
 
-    <section id="evolucao" class="tab-content">
-      <h2>📈 Plano de Evolução e Estudos</h2>
-      <p>Plano tático do que estudar e projetos a construir.</p>
+    <!-- TAB 6: EVOLUÇÃO -->
+    <section id="tab-evolucao" class="tab-pane">
+      <div class="dossier-card">
+        <h3 style="font-size:1rem; font-weight:700;">📈 Plano de Evolução</h3>
+        <p style="font-size:0.85rem; color:var(--text-muted);">Direcionamento prático: Tecnologias prioritárias para estudar.</p>
+      </div>
     </section>
 
   </div>
 
-  <script src="js/app.js"></script>
+  <script>
+    // ⚙️ NAVEGAÇÃO ENTRE ABAS
+    function openTab(evt, tabId) {
+      const panes = document.querySelectorAll('.tab-pane');
+      panes.forEach(pane => pane.classList.remove('active'));
+
+      const buttons = document.querySelectorAll('.nav-btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+
+      document.getElementById(tabId).classList.add('active');
+      evt.currentTarget.classList.add('active');
+    }
+
+    // 💾 BANCO DE DADOS LOCAL (localStorage)
+    function salvarVaga() {
+      const empresa = document.getElementById('vaga-empresa').value;
+      const cargo = document.getElementById('vaga-cargo').value;
+      const modelo = document.getElementById('vaga-modelo').value;
+      const descricao = document.getElementById('vaga-descricao').value;
+
+      if (!empresa || !cargo) {
+        alert('Por favor, preencha a Empresa e o Cargo.');
+        return;
+      }
+
+      const novaVaga = {
+        id: Date.now(),
+        empresa,
+        cargo,
+        modelo,
+        descricao,
+        data: new Date().toLocaleDateString('pt-BR')
+      };
+
+      let vagas = JSON.parse(localStorage.getItem('radar_vagas') || '[]');
+      vagas.push(novaVaga);
+      localStorage.setItem('radar_vagas', JSON.stringify(vagas));
+
+      // Limpa formulário
+      document.getElementById('vaga-empresa').value = '';
+      document.getElementById('vaga-cargo').value = '';
+      document.getElementById('vaga-descricao').value = '';
+
+      carregarVagas();
+      alert('Dossiê da vaga salvo com sucesso!');
+    }
+
+    function carregarVagas() {
+      const vagas = JSON.parse(localStorage.getItem('radar_vagas') || '[]');
+      const container = document.getElementById('lista-vagas');
+      
+      // Atualiza contador do Dashboard
+      document.getElementById('count-comp').innerText = vagas.length;
+
+      if (vagas.length === 0) {
+        container.innerHTML = '';
+        return;
+      }
+
+      container.innerHTML = '<div class="section-title">📂 Vagas Salvas</div>' + vagas.map(v => `
+        <div class="dossier-card" style="border-left:4px solid var(--primary);">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <strong>${v.cargo}</strong>
+            <span class="match-tag">${v.modelo}</span>
+          </div>
+          <p style="font-size:0.85rem; color:var(--text-muted);">${v.empresa} • Cadastrado em ${v.data}</p>
+          <p style="font-size:0.8rem; background:var(--surface-2); padding:10px; border-radius:8px;">${v.descricao || 'Sem descrição.'}</p>
+        </div>
+      `).join('');
+    }
+
+    // Carrega dados iniciais ao abrir
+    window.onload = carregarVagas;
+  </script>
 </body>
 </html>
