@@ -3,83 +3,676 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Radar da Carreira - Autônomo</title>
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-  
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+
+  <title>Radar da Carreira</title>
+
+  <link rel="stylesheet" href="estilo.css">
 </head>
+
 <body>
 
-  <div id="app-wrapper">
-    <header>
-      <div class="brand-title"><span>🛰️</span> RADAR AUTÔNOMO</div>
-      <button class="btn-theme-toggle" onclick="openTab(event, 'tab-theme')">🎨 Tema</button>
-    </header>
+<div class="app">
 
-    <div id="status-bar" class="status-card">
-      <span id="status-auto">⚡ Modulo de captura autônoma pronto.</span>
+  <!-- CABEÇALHO -->
+
+  <header class="topo">
+
+    <div class="marca">
+      <div class="logo">◉</div>
+
+      <div>
+        <h1>RADAR DA CARREIRA</h1>
+        <p>Centro de Inteligência Profissional</p>
+      </div>
     </div>
 
-    <nav class="nav-scroller">
-      <button class="nav-btn active" onclick="openTab(event, 'tab-vagas')">💼 Vagas Encontradas</button>
-      <button class="nav-btn" onclick="openTab(event, 'tab-candidaturas')">🗄️ Candidaturas</button>
-      <button class="nav-btn" onclick="openTab(event, 'tab-curriculo')">📄 Meu Perfil (CV)</button>
-      <button class="nav-btn" onclick="openTab(event, 'tab-theme')">🎨 Apagador/Tema</button>
-    </nav>
+    <div class="status-sistema">
+      <span class="ponto"></span>
+      SISTEMA ATIVO
+    </div>
 
-    <!-- ESTANTE DE VAGAS -->
-    <section id="tab-vagas" class="tab-pane active">
-      <div class="card-action">
-        <button class="btn-primary" onclick="rodarBuscaAutonoma()">🔄 Varrer Web Agora</button>
-        <input type="text" class="form-control" placeholder="🔍 Filtrar vagas..." oninput="filtrarVagas(this.value)">
+  </header>
+
+
+  <!-- MENU -->
+
+  <nav class="menu">
+
+    <button class="nav-btn ativo" data-tab="dashboard">
+      🏠 <span>Dashboard</span>
+    </button>
+
+    <button class="nav-btn" data-tab="vagas">
+      🔎 <span>Vagas</span>
+    </button>
+
+    <button class="nav-btn" data-tab="candidaturas">
+      📤 <span>Candidaturas</span>
+    </button>
+
+    <button class="nav-btn" data-tab="empresas">
+      🏢 <span>Empresas</span>
+    </button>
+
+    <button class="nav-btn" data-tab="curriculos">
+      📄 <span>Currículos</span>
+    </button>
+
+    <button class="nav-btn" data-tab="evolucao">
+      📚 <span>Evolução</span>
+    </button>
+
+    <button class="nav-btn" data-tab="alertas">
+      🚨 <span>Alertas</span>
+    </button>
+
+    <button class="nav-btn" data-tab="configuracoes">
+      ⚙️ <span>Personalizar</span>
+    </button>
+
+  </nav>
+
+
+  <!-- CONTEÚDO -->
+
+  <main class="conteudo">
+
+
+    <!-- DASHBOARD -->
+
+    <section class="tab ativo" id="dashboard">
+
+      <div class="titulo-pagina">
+
+        <div>
+          <p class="eyebrow">VISÃO GERAL</p>
+          <h2>Central de Comando</h2>
+          <p>
+            Acompanhe sua estratégia profissional em um único lugar.
+          </p>
+        </div>
+
+        <div class="data" id="dataAtual"></div>
+
       </div>
-      <div id="estante-vagas" class="shelf-grid"></div>
-    </section>
 
-    <!-- CANDIDATURAS -->
-    <section id="tab-candidaturas" class="tab-pane">
-      <div id="estante-candidaturas" class="shelf-grid"></div>
-    </section>
 
-    <!-- MEU PERFIL (CV PARSER) -->
-    <section id="tab-curriculo" class="tab-pane">
-      <div class="card">
-        <h3>📄 Base do Seu Perfil</h3>
-        <p style="font-size:0.8rem; color:var(--text-muted);">Anexe seu currículo apenas uma vez para o robô usar como referência de cruzamento.</p>
-        <input type="file" id="cv-file" class="form-control" accept="application/pdf" onchange="extrairTextoPDF()">
-        <textarea id="cv-text" class="form-control" rows="4" placeholder="O robô usará o texto extraído para comparar com as vagas..."></textarea>
+      <div class="grid-stats">
+
+        <div class="stat-card">
+          <span>📩</span>
+          <div>
+            <small>CANDIDATURAS</small>
+            <strong id="totalCandidaturas">0</strong>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <span>🔎</span>
+          <div>
+            <small>VAGAS SALVAS</small>
+            <strong id="totalVagas">0</strong>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <span>🏢</span>
+          <div>
+            <small>EMPRESAS</small>
+            <strong id="totalEmpresas">0</strong>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <span>📄</span>
+          <div>
+            <small>CURRÍCULOS</small>
+            <strong id="totalCurriculos">0</strong>
+          </div>
+        </div>
+
       </div>
+
+
+      <div class="painel-grid">
+
+        <div class="painel destaque">
+
+          <div class="painel-topo">
+            <h3>🚨 Alertas Prioritários</h3>
+          </div>
+
+          <div id="dashboardAlertas" class="lista-vazia">
+            Nenhum alerta importante no momento.
+          </div>
+
+        </div>
+
+
+        <div class="painel">
+
+          <div class="painel-topo">
+            <h3>🎯 Próximas Ações</h3>
+          </div>
+
+          <div id="proximasAcoes" class="lista-vazia">
+            Cadastre vagas e objetivos para começar.
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="painel">
+
+        <div class="painel-topo">
+          <h3>📊 Resumo da Operação</h3>
+        </div>
+
+        <div id="resumoOperacao" class="resumo-operacao">
+          Seu Radar está pronto para começar.
+        </div>
+
+      </div>
+
     </section>
 
-    <!-- TEMAS -->
-    <section id="tab-theme" class="tab-pane">
-      <div class="card">
-        <h3>🎨 Aparência e Layout</h3>
-        <div class="theme-buttons">
-          <button class="btn-theme" style="background:#6366f1;" onclick="aplicarTema('default')">Dark Purple</button>
-          <button class="btn-theme" style="background:#f4f1ea; color:#000;" onclick="aplicarTema('paper')">Paper Light</button>
-          <button class="btn-theme" style="background:#10b981;" onclick="aplicarTema('emerald')">Emerald</button>
-          <button class="btn-theme" style="background:#ff007f;" onclick="aplicarTema('cyberpunk')">Cyberpunk</button>
+
+
+    <!-- VAGAS -->
+
+    <section class="tab" id="vagas">
+
+      <div class="titulo-pagina">
+        <div>
+          <p class="eyebrow">BANCO DE OPORTUNIDADES</p>
+          <h2>Vagas</h2>
+          <p>Registre e organize oportunidades profissionais.</p>
         </div>
       </div>
-    </section>
-  </div>
 
-  <script>
-    function openTab(evt, tabId) {
-      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById(tabId).classList.add('active');
-      if (evt && evt.currentTarget) evt.currentTarget.classList.add('active');
-    }
-  </script>
-  
-  <script src="db.js"></script>
-  <script src="search.js"></script>
-  <script src="ai.js"></script>
+
+      <div class="painel">
+
+        <h3>➕ Nova Vaga</h3>
+
+        <form id="formVaga" class="formulario">
+
+          <input id="vagaEmpresa" placeholder="Empresa" required>
+
+          <input id="vagaCargo" placeholder="Cargo / vaga" required>
+
+          <input id="vagaLocalizacao" placeholder="Localização">
+
+          <select id="vagaModelo">
+            <option value="">Modelo de trabalho</option>
+            <option>Remoto</option>
+            <option>Híbrido</option>
+            <option>Presencial</option>
+          </select>
+
+          <input id="vagaSalario" placeholder="Salário">
+
+          <input id="vagaBeneficios" placeholder="Benefícios">
+
+          <input
+            id="vagaCompatibilidade"
+            type="number"
+            min="0"
+            max="100"
+            placeholder="Compatibilidade %"
+          >
+
+          <textarea
+            id="vagaRequisitos"
+            placeholder="Requisitos e tecnologias"
+          ></textarea>
+
+          <textarea
+            id="vagaDescricao"
+            placeholder="Descrição original da vaga"
+          ></textarea>
+
+          <button type="submit" class="btn-principal">
+            SALVAR VAGA
+          </button>
+
+        </form>
+
+      </div>
+
+
+      <div class="secao-lista">
+
+        <h3>📂 Vagas Registradas</h3>
+
+        <div id="listaVagas" class="lista-cards"></div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- CANDIDATURAS -->
+
+    <section class="tab" id="candidaturas">
+
+      <div class="titulo-pagina">
+
+        <div>
+          <p class="eyebrow">HISTÓRICO PROFISSIONAL</p>
+          <h2>Candidaturas</h2>
+          <p>Controle exatamente o que foi enviado para cada empresa.</p>
+        </div>
+
+      </div>
+
+
+      <div class="painel">
+
+        <h3>📤 Registrar Candidatura</h3>
+
+        <form id="formCandidatura" class="formulario">
+
+          <input
+            id="candEmpresa"
+            placeholder="Empresa"
+            required
+          >
+
+          <input
+            id="candCargo"
+            placeholder="Cargo"
+            required
+          >
+
+          <input
+            id="candData"
+            type="date"
+          >
+
+          <select id="candStatus">
+
+            <option value="Enviado">🟡 Enviado</option>
+            <option value="Em análise">🔵 Em análise</option>
+            <option value="Entrevista">🟢 Entrevista</option>
+            <option value="Recusado">🔴 Recusado</option>
+            <option value="Aprovado">🏆 Aprovado</option>
+
+          </select>
+
+          <input
+            id="candCurriculo"
+            placeholder="Versão do currículo utilizada"
+          >
+
+          <textarea
+            id="candEnviado"
+            placeholder="EXATAMENTE o que foi enviado para a empresa"
+          ></textarea>
+
+          <textarea
+            id="candObservacoes"
+            placeholder="Observações importantes"
+          ></textarea>
+
+          <button type="submit" class="btn-principal">
+            REGISTRAR CANDIDATURA
+          </button>
+
+        </form>
+
+      </div>
+
+
+      <div class="secao-lista">
+
+        <h3>📚 Histórico de Candidaturas</h3>
+
+        <div id="listaCandidaturas" class="lista-cards"></div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- EMPRESAS -->
+
+    <section class="tab" id="empresas">
+
+      <div class="titulo-pagina">
+
+        <div>
+          <p class="eyebrow">BANCO DE EMPRESAS</p>
+          <h2>Empresas</h2>
+          <p>Construa seu próprio banco estratégico de empresas.</p>
+        </div>
+
+      </div>
+
+
+      <div class="painel">
+
+        <h3>🏢 Nova Empresa</h3>
+
+        <form id="formEmpresa" class="formulario">
+
+          <input id="empresaNome" placeholder="Nome da empresa" required>
+
+          <input id="empresaArea" placeholder="Área de atuação">
+
+          <input id="empresaLocal" placeholder="Localização">
+
+          <input id="empresaSite" placeholder="Site">
+
+          <textarea
+            id="empresaTecnologias"
+            placeholder="Tecnologias utilizadas"
+          ></textarea>
+
+          <textarea
+            id="empresaBeneficios"
+            placeholder="Benefícios conhecidos"
+          ></textarea>
+
+          <textarea
+            id="empresaCultura"
+            placeholder="Cultura / informações importantes"
+          ></textarea>
+
+          <button type="submit" class="btn-principal">
+            SALVAR EMPRESA
+          </button>
+
+        </form>
+
+      </div>
+
+
+      <div class="secao-lista">
+
+        <h3>🏢 Empresas Registradas</h3>
+
+        <div id="listaEmpresas" class="lista-cards"></div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- CURRÍCULOS -->
+
+    <section class="tab" id="curriculos">
+
+      <div class="titulo-pagina">
+
+        <div>
+          <p class="eyebrow">GESTÃO DE VERSÕES</p>
+          <h2>Currículos</h2>
+          <p>Controle suas versões e mantenha seu material atualizado.</p>
+        </div>
+
+      </div>
+
+
+      <div class="painel">
+
+        <h3>📄 Adicionar Currículo</h3>
+
+        <form id="formCurriculo" class="formulario">
+
+          <input
+            id="curriculoNome"
+            placeholder="Nome da versão (Ex: Currículo V1)"
+            required
+          >
+
+          <input
+            id="curriculoData"
+            type="date"
+          >
+
+          <textarea
+            id="curriculoDescricao"
+            placeholder="O que mudou nesta versão?"
+          ></textarea>
+
+          <textarea
+            id="curriculoConteudo"
+            placeholder="Informações / conteúdo importante deste currículo"
+          ></textarea>
+
+          <button type="submit" class="btn-principal">
+            SALVAR VERSÃO
+          </button>
+
+        </form>
+
+      </div>
+
+
+      <div class="secao-lista">
+
+        <h3>📚 Histórico de Currículos</h3>
+
+        <div id="listaCurriculos" class="lista-cards"></div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- EVOLUÇÃO -->
+
+    <section class="tab" id="evolucao">
+
+      <div class="titulo-pagina">
+
+        <div>
+          <p class="eyebrow">EVOLUÇÃO PROFISSIONAL</p>
+          <h2>Plano de Evolução</h2>
+          <p>Transforme o mercado em ações concretas.</p>
+        </div>
+
+      </div>
+
+
+      <div class="painel">
+
+        <h3>🎯 Nova Prioridade</h3>
+
+        <form id="formEvolucao" class="formulario">
+
+          <input
+            id="evolucaoTitulo"
+            placeholder="Tecnologia / habilidade / objetivo"
+            required
+          >
+
+          <select id="evolucaoPrioridade">
+
+            <option value="Alta">🔴 Alta prioridade</option>
+            <option value="Média">🟡 Média prioridade</option>
+            <option value="Baixa">🟢 Baixa prioridade</option>
+
+          </select>
+
+          <textarea
+            id="evolucaoEstudo"
+            placeholder="O que estudar?"
+          ></textarea>
+
+          <textarea
+            id="evolucaoProjeto"
+            placeholder="Projeto recomendado"
+          ></textarea>
+
+          <textarea
+            id="evolucaoObservacao"
+            placeholder="Observações"
+          ></textarea>
+
+          <button type="submit" class="btn-principal">
+            ADICIONAR AO PLANO
+          </button>
+
+        </form>
+
+      </div>
+
+
+      <div class="secao-lista">
+
+        <h3>🚀 Meu Plano Estratégico</h3>
+
+        <div id="listaEvolucao" class="lista-cards"></div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- ALERTAS -->
+
+    <section class="tab" id="alertas">
+
+      <div class="titulo-pagina">
+
+        <div>
+          <p class="eyebrow">CENTRAL DE ALERTAS</p>
+          <h2>Alertas</h2>
+          <p>Registre acontecimentos importantes da sua operação.</p>
+        </div>
+
+      </div>
+
+
+      <div class="painel">
+
+        <form id="formAlerta" class="formulario">
+
+          <input
+            id="alertaTitulo"
+            placeholder="Título do alerta"
+            required
+          >
+
+          <select id="alertaTipo">
+
+            <option value="Prioridade">🚨 Prioridade</option>
+            <option value="Importante">⚠️ Importante</option>
+            <option value="Informação">ℹ️ Informação</option>
+
+          </select>
+
+          <textarea
+            id="alertaDescricao"
+            placeholder="Descrição"
+          ></textarea>
+
+          <button type="submit" class="btn-principal">
+            CRIAR ALERTA
+          </button>
+
+        </form>
+
+      </div>
+
+
+      <div class="secao-lista">
+
+        <h3>🚨 Alertas Registrados</h3>
+
+        <div id="listaAlertas" class="lista-cards"></div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- CONFIGURAÇÕES -->
+
+    <section class="tab" id="configuracoes">
+
+      <div class="titulo-pagina">
+
+        <div>
+          <p class="eyebrow">PERSONALIZAÇÃO</p>
+          <h2>Meu Radar</h2>
+          <p>Personalize o ambiente do seu jeito.</p>
+        </div>
+
+      </div>
+
+
+      <div class="painel">
+
+        <h3>🎨 Aparência</h3>
+
+        <div class="config-grid">
+
+          <label>
+
+            Cor principal
+
+            <input
+              type="color"
+              id="corPrincipal"
+              value="#7c5cff"
+            >
+
+          </label>
+
+
+          <label>
+
+            Tamanho da fonte
+
+            <input
+              type="range"
+              id="tamanhoFonte"
+              min="14"
+              max="22"
+              value="16"
+            >
+
+          </label>
+
+        </div>
+
+      </div>
+
+
+      <div class="painel perigo">
+
+        <h3>⚠️ Banco de Dados</h3>
+
+        <p>
+          Seus dados são armazenados neste navegador.
+        </p>
+
+        <button id="limparDados" class="btn-perigo">
+          APAGAR TODOS OS DADOS
+        </button>
+
+      </div>
+
+    </section>
+
+
+  </main>
+
+</div>
+
+
+<script src="app.js"></script>
+
 </body>
 </html>
