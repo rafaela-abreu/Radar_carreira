@@ -8,235 +8,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-
-  <style>
-    :root {
-      --bg-gradient: linear-gradient(135deg, #0b0d14 0%, #111422 100%);
-      --surface-1: #161a29;
-      --surface-2: #1e2438;
-      --surface-card: #181c2e;
-      --primary: #6366f1;
-      --primary-glow: rgba(99, 102, 241, 0.25);
-      --border: #282f45;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      
-      --status-success: #10b981;
-      --status-warning: #f59e0b;
-      --status-danger: #ef4444;
-      --status-info: #06b6d4;
-
-      --radius-lg: 16px;
-      --radius-md: 12px;
-      --radius-sm: 8px;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    body {
-      background: var(--bg-gradient);
-      color: var(--text-main);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      padding: 12px;
-    }
-
-    #app-wrapper {
-      width: 100%;
-      max-width: 900px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    header {
-      background: var(--surface-1);
-      border: 1px solid var(--border);
-      padding: 16px;
-      border-radius: var(--radius-lg);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    }
-
-    .brand-title {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 800;
-      font-size: 1.15rem;
-      background: linear-gradient(90deg, #fff, #94a3b8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .badge-status {
-      background: rgba(16, 185, 129, 0.15);
-      color: var(--status-success);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 700;
-    }
-
-    nav.nav-scroller {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-      scrollbar-width: none;
-    }
-
-    nav.nav-scroller::-webkit-scrollbar { display: none; }
-
-    .nav-btn {
-      background: var(--surface-1);
-      color: var(--text-muted);
-      border: 1px solid var(--border);
-      padding: 12px 18px;
-      border-radius: var(--radius-md);
-      font-size: 0.85rem;
-      font-weight: 600;
-      white-space: nowrap;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .nav-btn.active {
-      background: var(--primary);
-      color: #ffffff;
-      border-color: var(--primary);
-      box-shadow: 0 4px 14px var(--primary-glow);
-    }
-
-    .tab-pane {
-      display: none;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .tab-pane.active { display: flex; }
-
-    .metrics-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-
-    .metric-card {
-      background: var(--surface-card);
-      border: 1px solid var(--border);
-      padding: 16px;
-      border-radius: var(--radius-lg);
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .metric-label { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; }
-    .metric-value { font-size: 1.5rem; font-weight: 800; color: var(--text-main); }
-
-    .dossier-card {
-      background: var(--surface-1);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .shelf-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 14px;
-    }
-
-    .shelf-item {
-      background: var(--surface-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      transition: border-color 0.2s;
-    }
-
-    .shelf-item:hover {
-      border-color: var(--primary);
-    }
-
-    .tag {
-      display: inline-block;
-      padding: 3px 8px;
-      border-radius: 6px;
-      font-size: 0.72rem;
-      font-weight: 700;
-    }
-
-    .tag-success { background: rgba(16, 185, 129, 0.2); color: var(--status-success); }
-    .tag-warning { background: rgba(245, 158, 11, 0.2); color: var(--status-warning); }
-    .tag-info { background: rgba(6, 182, 212, 0.2); color: var(--status-info); }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .form-group label { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); }
-
-    .form-control {
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      color: var(--text-main);
-      padding: 12px;
-      border-radius: var(--radius-md);
-      font-size: 0.9rem;
-      outline: none;
-    }
-
-    .form-control:focus { border-color: var(--primary); }
-
-    .btn-primary {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 14px;
-      border-radius: var(--radius-md);
-      font-weight: 700;
-      font-size: 0.9rem;
-      cursor: pointer;
-      box-shadow: 0 4px 14px var(--primary-glow);
-    }
-
-    .ai-box {
-      background: rgba(99, 102, 241, 0.08);
-      border: 1px solid var(--primary);
-      border-radius: var(--radius-md);
-      padding: 16px;
-      font-size: 0.85rem;
-      line-height: 1.5;
-    }
-  </style>
 </head>
 <body>
 
   <div id="app-wrapper">
     <header>
       <div class="brand-title"><span>🛰️</span> RADAR DA CARREIRA</div>
-      <span class="badge-status">ESTANTE V2</span>
+      <span class="badge-status">SISTEMA MODULAR</span>
     </header>
 
     <nav class="nav-scroller">
@@ -247,7 +28,7 @@
       <button class="nav-btn" onclick="openTab(event, 'tab-config')">⚙️ Config IA</button>
     </nav>
 
-    <!-- TAB 1: DASHBOARD -->
+    <!-- DASHBOARD -->
     <section id="tab-dashboard" class="tab-pane active">
       <div class="metrics-grid">
         <div class="metric-card">
@@ -269,7 +50,7 @@
       </div>
     </section>
 
-    <!-- TAB 2: VAGAS (ESTANTE VISUAL) -->
+    <!-- VAGAS -->
     <section id="tab-vagas" class="tab-pane">
       <div class="dossier-card">
         <h3>📂 Cadastrar Novo Dossiê de Vaga</h3>
@@ -296,11 +77,16 @@
         <button class="btn-primary" onclick="salvarVagaDB()">💾 Adicionar à Estante do Radar</button>
       </div>
 
+      <div class="form-group" style="margin-top:10px;">
+        <label>🔍 Buscar nas Vagas Cadastradas</label>
+        <input type="text" class="form-control" placeholder="Digite cargo ou empresa..." oninput="filtrarVagas(this.value)">
+      </div>
+
       <h3 style="font-size:0.95rem; color:var(--text-muted); margin-top:10px;">📚 Estante de Vagas Cadastradas</h3>
       <div id="estante-vagas" class="shelf-container"></div>
     </section>
 
-    <!-- TAB 3: CANDIDATURAS -->
+    <!-- CANDIDATURAS -->
     <section id="tab-candidaturas" class="tab-pane">
       <div class="dossier-card">
         <h3>🗄️ Registrar Histórico de Envio</h3>
@@ -323,7 +109,7 @@
       <div id="estante-candidaturas" class="shelf-container"></div>
     </section>
 
-    <!-- TAB 4: CURRÍCULO & IA -->
+    <!-- CURRÍCULO & IA -->
     <section id="tab-curriculo" class="tab-pane">
       <div class="dossier-card">
         <h3>📄 Validador de Currículo & Análise da IA</h3>
@@ -345,7 +131,7 @@
       <div id="ai-resultado" class="ai-box" style="display:none;"></div>
     </section>
 
-    <!-- TAB 5: CONFIGURAÇÃO IA -->
+    <!-- CONFIGURAÇÃO IA -->
     <section id="tab-config" class="tab-pane">
       <div class="dossier-card">
         <h3>⚙️ Conectar Chave de API de Inteligência</h3>
@@ -359,199 +145,16 @@
   </div>
 
   <script>
-    let db;
-    const request = indexedDB.open("RadarCarreiraDB", 2);
-
-    request.onupgradeneeded = function(e) {
-      db = e.target.result;
-      if (!db.objectStoreNames.contains("vagas")) db.createObjectStore("vagas", { keyPath: "id", autoIncrement: true });
-      if (!db.objectStoreNames.contains("candidaturas")) db.createObjectStore("candidaturas", { keyPath: "id", autoIncrement: true });
-    };
-
-    request.onsuccess = function(e) {
-      db = e.target.result;
-      carregarEstantes();
-    };
-
     function openTab(evt, tabId) {
       document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
       evt.currentTarget.classList.add('active');
     }
-
-    // 💾 SALVAR VAGA
-    function salvarVagaDB() {
-      const empresa = document.getElementById('vaga-empresa').value;
-      const cargo = document.getElementById('vaga-cargo').value;
-      const modelo = document.getElementById('vaga-modelo').value;
-      const desc = document.getElementById('vaga-desc').value;
-
-      if (!empresa || !cargo) return alert("Preencha Empresa e Cargo.");
-
-      const tx = db.transaction(["vagas"], "readwrite");
-      tx.objectStore("vagas").add({
-        empresa, cargo, modelo, desc, data: new Date().toLocaleDateString('pt-BR')
-      });
-
-      tx.oncomplete = function() {
-        alert("Dossiê da vaga salvo com sucesso!");
-        document.getElementById('vaga-empresa').value = '';
-        document.getElementById('vaga-cargo').value = '';
-        document.getElementById('vaga-desc').value = '';
-        carregarEstantes();
-      };
-    }
-
-    // 🗄️ SALVAR CANDIDATURA
-    function salvarCandidaturaDB() {
-      const vagaId = document.getElementById('cand-vaga-select').value;
-      const versao = document.getElementById('cand-version').value;
-      const texto = document.getElementById('cand-texto').value;
-
-      if (!vagaId || !versao) return alert("Selecione a vaga e a versão do currículo.");
-
-      const tx = db.transaction(["candidaturas"], "readwrite");
-      tx.objectStore("candidaturas").add({
-        vagaId, versao, texto, data: new Date().toLocaleDateString('pt-BR')
-      });
-
-      tx.oncomplete = function() {
-        alert("Candidatura registrada!");
-        document.getElementById('cand-version').value = '';
-        document.getElementById('cand-texto').value = '';
-        carregarEstantes();
-      };
-    }
-
-    // 📄 EXTRAÇÃO DE TEXTO DO PDF
-    async function extrairTextoPDF() {
-      const file = document.getElementById('cv-file').files[0];
-      if (!file) return;
-
-      const fileReader = new FileReader();
-      fileReader.onload = async function() {
-        const typedarray = new Uint8Array(this.result);
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
-        const pdf = await pdfjsLib.getDocument(typedarray).promise;
-        let textoTotal = '';
-
-        for (let i = 1; i <= pdf.numPages; i++) {
-          const page = await pdf.getPage(i);
-          const content = await page.getTextContent();
-          textoTotal += content.items.map(item => item.str).join(' ') + '\n';
-        }
-
-        document.getElementById('cv-text').value = textoTotal;
-        document.getElementById('dash-cv-status').innerText = "Carregado";
-      };
-      fileReader.readAsArrayBuffer(file);
-    }
-
-    // 🧠 ANÁLISE E CRUZAMENTO
-    function executarAnaliseIA() {
-      const cvText = document.getElementById('cv-text').value;
-      const resBox = document.getElementById('ai-resultado');
-
-      if (!cvText) return alert("Adicione o texto do currículo primeiro.");
-
-      resBox.style.display = 'block';
-      resBox.innerHTML = '<strong>🧠 Analisando perfil e requisitos...</strong>';
-
-      setTimeout(() => {
-        resBox.innerHTML = `
-          <strong>📊 Relatório do Radar de Carreira (Análise Inteligente):</strong><br><br>
-          • <strong>Nota de Compatibilidade:</strong> <span class="tag tag-success">88% Alinhada</span><br>
-          • <strong>Pontos Fortes Identificados:</strong> HTML, CSS, JavaScript, Organização de Projetos.<br>
-          • <strong>Gaps / Tecnologias Faltantes:</strong> Conhecimentos profundos em React e Consumo de APIs RESTful.<br>
-          • <strong>Recomendação Prática:</strong> Atualize o resumo inicial do currículo destacando seus projetos práticos em Front-End.
-        `;
-      }, 1200);
-    }
-
-    // ⚙️ API KEY
-    function salvarApiKey() {
-      const key = document.getElementById('api-key').value;
-      localStorage.setItem('radar_api_key', key);
-      alert("Chave salva!");
-    }
-
-    // 📚 CARREGAR DADOS NAS ESTANTES
-    function carregarEstantes() {
-      if (!db) return;
-
-      const estanteVagas = document.getElementById('estante-vagas');
-      const candSelect = document.getElementById('cand-vaga-select');
-      const cvCrossSelect = document.getElementById('cv-vaga-cross');
-      const estanteCand = document.getElementById('estante-candidaturas');
-
-      estanteVagas.innerHTML = '';
-      candSelect.innerHTML = '';
-      cvCrossSelect.innerHTML = '';
-      estanteCand.innerHTML = '';
-
-      let countVagas = 0;
-      let mapVagas = {};
-
-      // Carregar Vagas
-      const txVagas = db.transaction(["vagas"], "readonly");
-      txVagas.objectStore("vagas").openCursor().onsuccess = function(e) {
-        const cursor = e.target.result;
-        if (cursor) {
-          countVagas++;
-          const v = cursor.value;
-          mapVagas[v.id] = v;
-
-          // Item da Estante Visual
-          estanteVagas.innerHTML += `
-            <div class="shelf-item">
-              <div style="display:flex; justify-content:space-between;">
-                <strong style="font-size:0.9rem;">${v.cargo}</strong>
-                <span class="tag tag-info">${v.modelo}</span>
-              </div>
-              <span style="font-size:0.8rem; color:var(--text-muted);">${v.empresa} • Cadastrado em ${v.data}</span>
-              <p style="font-size:0.75rem; background:var(--surface-2); padding:8px; border-radius:6px; max-height:80px; overflow:hidden;">${v.desc}</p>
-            </div>
-          `;
-
-          // Selects
-          const opt = `<option value="${v.id}">${v.cargo} - ${v.empresa}</option>`;
-          candSelect.innerHTML += opt;
-          cvCrossSelect.innerHTML += opt;
-
-          cursor.continue();
-        } else {
-          document.getElementById('dash-vagas').innerText = countVagas;
-        }
-      };
-
-      // Carregar Candidaturas
-      let countCand = 0;
-      const txCand = db.transaction(["candidaturas"], "readonly");
-      txCand.objectStore("candidaturas").openCursor().onsuccess = function(e) {
-        const cursor = e.target.result;
-        if (cursor) {
-          countCand++;
-          const c = cursor.value;
-          const vaga = mapVagas[c.vagaId] || { cargo: "Vaga", empresa: "Empresa" };
-
-          estanteCand.innerHTML += `
-            <div class="shelf-item">
-              <div style="display:flex; justify-content:space-between;">
-                <strong style="font-size:0.9rem;">${vaga.cargo}</strong>
-                <span class="tag tag-success">Enviado</span>
-              </div>
-              <span style="font-size:0.8rem; color:var(--text-muted);">${vaga.empresa} • ${c.data}</span>
-              <span style="font-size:0.75rem; color:var(--primary);">📄 Versão: ${c.versao}</span>
-              <p style="font-size:0.75rem; background:var(--surface-2); padding:8px; border-radius:6px;">${c.texto || 'Sem texto anexado.'}</p>
-            </div>
-          `;
-          cursor.continue();
-        } else {
-          document.getElementById('dash-candidaturas').innerText = countCand;
-        }
-      };
-    }
   </script>
+  
+  <script src="db.js"></script>
+  <script src="search.js"></script>
+  <script src="ai.js"></script>
 </body>
 </html>
