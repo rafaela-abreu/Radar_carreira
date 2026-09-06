@@ -1,0 +1,30 @@
+:root {
+  /* 🎨 Paleta de Cores Padrão (Inspirada no Mind Note / Tema Escuro/Elegante) */
+  --bg-primary: #12141d;
+  --bg-secondary: #1a1d28;
+  --bg-card: #222636;
+  --bg-card-hover: #2a2f42;
+  
+  --text-main: #e2e8f0;
+  --text-muted: #94a3b8;
+  
+  --accent-color: #6366f1; /* Índigo refinado */
+  --accent-hover: #4f46e5;
+  --border-color: #2e3447;
+  
+  /* 🚨 Status & Indicadores */
+  --status-high: #22c55e;   /* Compatibilidade Alta / Entrevista */
+  --status-medium: #eab308; /* Parcial / Enviado */
+  --status-low: #ef4444;    /* Baixa / Alerta */
+  --status-info: #3b82f6;   /* Em Análise */
+
+  /* 📏 Layout, Alinhamento e Largura Personalizáveis */
+  --app-max-width: 1100px;
+  --border-radius-card: 16px;
+  --border-radius-btn: 10px;
+  --padding-container: 16px;
+  
+  /* 🔤 Tipografia */
+  --font-family-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-size-base: 15px;
+}
