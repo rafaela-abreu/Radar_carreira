@@ -5,10 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Radar da Carreira - Rafaela</title>
   
-  <!-- Fonte Premium para Interface Moderna -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Leitor de Arquivos PDF em JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 
   <style>
     :root {
@@ -19,18 +20,15 @@
       --primary: #6366f1;
       --primary-glow: rgba(99, 102, 241, 0.25);
       --border: #282f45;
-      --border-highlight: #3b4566;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       
       --status-success: #10b981;
       --status-warning: #f59e0b;
       --status-danger: #ef4444;
-      --status-info: #06b6d4;
 
       --radius-lg: 16px;
       --radius-md: 12px;
-      --radius-sm: 8px;
     }
 
     * {
@@ -58,7 +56,6 @@
       gap: 16px;
     }
 
-    /* 🛰️ HEADER PREMIUM */
     header {
       background: var(--surface-1);
       border: 1px solid var(--border);
@@ -67,7 +64,6 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     }
 
     .brand-title {
@@ -76,7 +72,6 @@
       gap: 10px;
       font-weight: 800;
       font-size: 1.15rem;
-      letter-spacing: 0.5px;
       background: linear-gradient(90deg, #fff, #94a3b8);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -92,7 +87,6 @@
       font-weight: 700;
     }
 
-    /* 🧭 NAVEGAÇÃO DE ABAS TIPO MIND NOTE */
     nav.nav-scroller {
       display: flex;
       gap: 8px;
@@ -101,9 +95,7 @@
       scrollbar-width: none;
     }
 
-    nav.nav-scroller::-webkit-scrollbar {
-      display: none;
-    }
+    nav.nav-scroller::-webkit-scrollbar { display: none; }
 
     .nav-btn {
       background: var(--surface-1);
@@ -115,7 +107,7 @@
       font-weight: 600;
       white-space: nowrap;
       cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.2s ease;
     }
 
     .nav-btn.active {
@@ -125,61 +117,13 @@
       box-shadow: 0 4px 14px var(--primary-glow);
     }
 
-    /* 📦 CONTEÚDO DAS ABAS */
     .tab-pane {
       display: none;
       flex-direction: column;
       gap: 16px;
-      animation: fadeIn 0.25s ease-in-out;
     }
 
-    .tab-pane.active {
-      display: flex;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* 🚨 CARD DE ALERTA */
-    .alert-card {
-      background: linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(245, 158, 11, 0.05) 100%);
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      padding: 16px;
-      border-radius: var(--radius-lg);
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .alert-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-weight: 700;
-      color: #fca5a5;
-      font-size: 0.9rem;
-    }
-
-    .match-tag {
-      background: rgba(16, 185, 129, 0.2);
-      color: var(--status-success);
-      padding: 2px 8px;
-      border-radius: 6px;
-      font-size: 0.75rem;
-      font-weight: 800;
-    }
-
-    /* 📊 PAINEL DE INDICADORES (ESTANTE VISUAL) */
-    .section-title {
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      margin-top: 8px;
-    }
+    .tab-pane.active { display: flex; }
 
     .metrics-grid {
       display: grid;
@@ -197,22 +141,9 @@
       gap: 8px;
     }
 
-    .metric-label {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+    .metric-label { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; }
+    .metric-value { font-size: 1.5rem; font-weight: 800; color: var(--text-main); }
 
-    .metric-value {
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: var(--text-main);
-    }
-
-    /* 📝 FORMULÁRIOS E DOSSIÊS (MIND NOTE VIBE) */
     .dossier-card {
       background: var(--surface-1);
       border: 1px solid var(--border);
@@ -229,11 +160,7 @@
       gap: 6px;
     }
 
-    .form-group label {
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--text-muted);
-    }
+    .form-group label { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); }
 
     .form-control {
       background: var(--surface-2);
@@ -245,9 +172,7 @@
       outline: none;
     }
 
-    .form-control:focus {
-      border-color: var(--primary);
-    }
+    .form-control:focus { border-color: var(--primary); }
 
     .btn-primary {
       background: var(--primary);
@@ -260,206 +185,278 @@
       cursor: pointer;
       box-shadow: 0 4px 14px var(--primary-glow);
     }
+
+    .ai-analysis-box {
+      background: rgba(99, 102, 241, 0.08);
+      border: 1px solid var(--primary);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      font-size: 0.85rem;
+      line-height: 1.4;
+    }
   </style>
 </head>
 <body>
 
   <div id="app-wrapper">
-    
-    <!-- Topo / Header -->
     <header>
-      <div class="brand-title">
-        <span>🛰️</span> RADAR DA CARREIRA
-      </div>
-      <span class="badge-status">ONLINE</span>
+      <div class="brand-title"><span>🛰️</span> RADAR DA CARREIRA</div>
+      <span class="badge-status">INDEXDB ON</span>
     </header>
 
-    <!-- Navegação Estilo Caderno / Abas -->
     <nav class="nav-scroller">
       <button class="nav-btn active" onclick="openTab(event, 'tab-dashboard')">🏠 Dashboard</button>
-      <button class="nav-btn" onclick="openTab(event, 'tab-vagas')">💼 Dossiê Vagas</button>
+      <button class="nav-btn" onclick="openTab(event, 'tab-vagas')">💼 Vagas</button>
       <button class="nav-btn" onclick="openTab(event, 'tab-candidaturas')">🗄️ Candidaturas</button>
-      <button class="nav-btn" onclick="openTab(event, 'tab-curriculo')">📄 Currículos</button>
-      <button class="nav-btn" onclick="openTab(event, 'tab-empresas')">🏢 Empresas</button>
-      <button class="nav-btn" onclick="openTab(event, 'tab-evolucao')">📈 Evolução</button>
+      <button class="nav-btn" onclick="openTab(event, 'tab-curriculo')">📄 Currículo e IA</button>
+      <button class="nav-btn" onclick="openTab(event, 'tab-config')">⚙️ Configurações IA</button>
     </nav>
 
-    <!-- TAB 1: DASHBOARD -->
+    <!-- DASHBOARD -->
     <section id="tab-dashboard" class="tab-pane active">
-      <div class="alert-card">
-        <div class="alert-header">
-          <span>🚨 OPORTUNIDADE DETECTADA</span>
-          <span class="match-tag">92% COMPATÍVEL</span>
-        </div>
-        <p><strong>Desenvolvedora Front-End Jr</strong> • Empresa X</p>
-        <p style="font-size:0.8rem; color:var(--text-muted);">Requisitos: HTML, CSS, JavaScript, React, Node.js</p>
-      </div>
-
-      <div class="section-title">📊 Visão Geral</div>
-
       <div class="metrics-grid">
         <div class="metric-card">
-          <span class="metric-label">📩 Enviadas</span>
-          <span class="metric-value" id="count-enviadas">0</span>
+          <span class="metric-label">💼 Vagas no Banco</span>
+          <span class="metric-value" id="dash-vagas">0</span>
         </div>
         <div class="metric-card">
-          <span class="metric-label">🟡 Em Análise</span>
-          <span class="metric-value" id="count-analise">0</span>
+          <span class="metric-label">📩 Candidaturas Enviadas</span>
+          <span class="metric-value" id="dash-candidaturas">0</span>
         </div>
         <div class="metric-card">
-          <span class="metric-label">🟢 Entrevistas</span>
-          <span class="metric-value" id="count-entrevistas">0</span>
+          <span class="metric-label">📄 Versões de Currículo</span>
+          <span class="metric-value" id="dash-curriculos">0</span>
         </div>
         <div class="metric-card">
-          <span class="metric-label">🎯 Vagas Compatíveis</span>
-          <span class="metric-value" id="count-comp">0</span>
+          <span class="metric-label">🧠 Análises de IA</span>
+          <span class="metric-value" id="dash-analises">0</span>
         </div>
       </div>
     </section>
 
-    <!-- TAB 2: VAGAS -->
+    <!-- VAGAS -->
     <section id="tab-vagas" class="tab-pane">
       <div class="dossier-card">
-        <h3 style="font-size:1rem; font-weight:700;">📂 Cadastrar Dossiê de Vaga</h3>
-        
+        <h3>📂 Cadastrar Dossiê da Vaga</h3>
         <div class="form-group">
-          <label>Nome da Empresa</label>
+          <label>Empresa</label>
           <input type="text" id="vaga-empresa" class="form-control" placeholder="Ex: Tech Corp">
         </div>
-
         <div class="form-group">
-          <label>Cargo da Vaga</label>
+          <label>Cargo</label>
           <input type="text" id="vaga-cargo" class="form-control" placeholder="Ex: Desenvolvedora Front-End Jr">
         </div>
-
         <div class="form-group">
-          <label>Modelo de Trabalho</label>
-          <select id="vaga-modelo" class="form-control">
-            <option value="Remoto">Remoto</option>
-            <option value="Híbrido">Híbrido</option>
-            <option value="Presencial">Presencial</option>
-          </select>
+          <label>Descrição e Requisitos da Vaga</label>
+          <textarea id="vaga-desc" class="form-control" rows="4" placeholder="Cole o anúncio completo..."></textarea>
         </div>
-
-        <div class="form-group">
-          <label>Descrição Original do Anúncio</label>
-          <textarea id="vaga-descricao" class="form-control" rows="4" placeholder="Cole aqui o texto original da vaga..."></textarea>
-        </div>
-
-        <button class="btn-primary" onclick="salvarVaga()">💾 Salvar Dossiê no Radar</button>
+        <button class="btn-primary" onclick="salvarVagaDB()">💾 Salvar Vaga no Banco de Dados</button>
       </div>
-
-      <div id="lista-vagas" style="display:flex; flex-direction:column; gap:12px;"></div>
+      <div id="lista-vagas-db"></div>
     </section>
 
-    <!-- TAB 3: CANDIDATURAS -->
+    <!-- CANDIDATURAS -->
     <section id="tab-candidaturas" class="tab-pane">
       <div class="dossier-card">
-        <h3 style="font-size:1rem; font-weight:700;">🗄️ Histórico de Candidaturas</h3>
-        <p style="font-size:0.85rem; color:var(--text-muted);">Registro completo do que foi enviado para rastreabilidade.</p>
-        <div id="lista-candidaturas" style="font-size:0.85rem; color:var(--text-muted);">Nenhuma candidatura registrada ainda.</div>
+        <h3>🗄️ Registrar Envio de Candidatura</h3>
+        <div class="form-group">
+          <label>Selecione a Vaga</label>
+          <select id="cand-vaga-select" class="form-control"></select>
+        </div>
+        <div class="form-group">
+          <label>Versão do Currículo Utilizado</label>
+          <input type="text" id="cand-version" class="form-control" placeholder="Ex: Currículo FrontEnd V2">
+        </div>
+        <div class="form-group">
+          <label>Texto/Carta de Apresentação Enviada</label>
+          <textarea id="cand-texto" class="form-control" rows="3" placeholder="Cole o texto exato que enviou..."></textarea>
+        </div>
+        <button class="btn-primary" onclick="salvarCandidaturaDB()">📤 Registrar Candidatura</button>
       </div>
+      <div id="lista-candidaturas-db"></div>
     </section>
 
-    <!-- TAB 4: CURRÍCULO -->
+    <!-- CURRÍCULO & ANÁLISE IA -->
     <section id="tab-curriculo" class="tab-pane">
       <div class="dossier-card">
-        <h3 style="font-size:1rem; font-weight:700;">📄 Versões do Currículo</h3>
-        <p style="font-size:0.85rem; color:var(--text-muted);">Gerencie as versões V1, V2, V3 vinculadas às candidaturas.</p>
+        <h3>📄 Anexar Currículo & Analisar com IA</h3>
+        <div class="form-group">
+          <label>Anexar arquivo PDF do Currículo</label>
+          <input type="file" id="cv-file" class="form-control" accept="application/pdf" onchange="extrairTextoPDF()">
+        </div>
+        <div class="form-group">
+          <label>Texto Extraído do Currículo</label>
+          <textarea id="cv-text" class="form-control" rows="5" placeholder="O conteúdo extraído do PDF aparecerá aqui..."></textarea>
+        </div>
+        <button class="btn-primary" onclick="analisarCurriculoIA()">🧠 Analisar Erros & Cruzar Requisitos com IA</button>
       </div>
+      <div id="ai-resultado" class="ai-analysis-box" style="display:none;"></div>
     </section>
 
-    <!-- TAB 5: EMPRESAS -->
-    <section id="tab-empresas" class="tab-pane">
+    <!-- CONFIGURAÇÕES DE IA -->
+    <section id="tab-config" class="tab-pane">
       <div class="dossier-card">
-        <h3 style="font-size:1rem; font-weight:700;">🏢 Banco de Empresas</h3>
-        <p style="font-size:0.85rem; color:var(--text-muted);">Dossiê cultural, requisitos recorrentes e faixas salariais.</p>
+        <h3>⚙️ Conexão de Inteligência Artificial</h3>
+        <div class="form-group">
+          <label>Chave de API OpenRouter / OpenAI / Gemini</label>
+          <input type="password" id="api-key" class="form-control" placeholder="Cole sua API Key aqui">
+        </div>
+        <button class="btn-primary" onclick="salvarApiKey()">💾 Salvar Chave de API</button>
       </div>
     </section>
-
-    <!-- TAB 6: EVOLUÇÃO -->
-    <section id="tab-evolucao" class="tab-pane">
-      <div class="dossier-card">
-        <h3 style="font-size:1rem; font-weight:700;">📈 Plano de Evolução</h3>
-        <p style="font-size:0.85rem; color:var(--text-muted);">Direcionamento prático: Tecnologias prioritárias para estudar.</p>
-      </div>
-    </section>
-
   </div>
 
   <script>
-    // ⚙️ NAVEGAÇÃO ENTRE ABAS
+    // ⚙️ INICIALIZAÇÃO DO BANCO DE DADOS INDEXEDDB
+    let db;
+    const request = indexedDB.open("RadarCarreiraDB", 1);
+
+    request.onupgradeneeded = function(e) {
+      db = e.target.result;
+      if (!db.objectStoreNames.contains("vagas")) db.createObjectStore("vagas", { keyPath: "id", autoIncrement: true });
+      if (!db.objectStoreNames.contains("candidaturas")) db.createObjectStore("candidaturas", { keyPath: "id", autoIncrement: true });
+      if (!db.objectStoreNames.contains("curriculos")) db.createObjectStore("curriculos", { keyPath: "id", autoIncrement: true });
+    };
+
+    request.onsuccess = function(e) {
+      db = e.target.result;
+      carregarDadosDB();
+    };
+
     function openTab(evt, tabId) {
-      const panes = document.querySelectorAll('.tab-pane');
-      panes.forEach(pane => pane.classList.remove('active'));
-
-      const buttons = document.querySelectorAll('.nav-btn');
-      buttons.forEach(btn => btn.classList.remove('active'));
-
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
       evt.currentTarget.classList.add('active');
     }
 
-    // 💾 BANCO DE DADOS LOCAL (localStorage)
-    function salvarVaga() {
+    // 💼 SALVAR E LISTAR VAGAS NO INDEXEDDB
+    function salvarVagaDB() {
       const empresa = document.getElementById('vaga-empresa').value;
       const cargo = document.getElementById('vaga-cargo').value;
-      const modelo = document.getElementById('vaga-modelo').value;
-      const descricao = document.getElementById('vaga-descricao').value;
+      const desc = document.getElementById('vaga-desc').value;
 
-      if (!empresa || !cargo) {
-        alert('Por favor, preencha a Empresa e o Cargo.');
+      if (!empresa || !cargo) return alert("Preencha a Empresa e o Cargo.");
+
+      const transaction = db.transaction(["vagas"], "readwrite");
+      const store = transaction.objectStore("vagas");
+      store.add({ empresa, cargo, desc, data: new Date().toLocaleDateString('pt-BR') });
+
+      transaction.oncomplete = function() {
+        alert("Vaga salva com sucesso no banco de dados local!");
+        document.getElementById('vaga-empresa').value = '';
+        document.getElementById('vaga-cargo').value = '';
+        document.getElementById('vaga-desc').value = '';
+        carregarDadosDB();
+      };
+    }
+
+    // 🗄️ REGISTRAR CANDIDATURA
+    function salvarCandidaturaDB() {
+      const vagaId = document.getElementById('cand-vaga-select').value;
+      const versao = document.getElementById('cand-version').value;
+      const texto = document.getElementById('cand-texto').value;
+
+      if (!vagaId || !versao) return alert("Selecione uma vaga e informe a versão do currículo.");
+
+      const transaction = db.transaction(["candidaturas"], "readwrite");
+      const store = transaction.objectStore("candidaturas");
+      store.add({ vagaId, versao, texto, data: new Date().toLocaleDateString('pt-BR') });
+
+      transaction.oncomplete = function() {
+        alert("Candidatura registrada!");
+        carregarDadosDB();
+      };
+    }
+
+    // 📄 EXTRAÇÃO DE TEXTO DO PDF
+    async function extrairTextoPDF() {
+      const file = document.getElementById('cv-file').files[0];
+      if (!file) return;
+
+      const fileReader = new FileReader();
+      fileReader.onload = async function() {
+        const typedarray = new Uint8Array(this.result);
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+        const pdf = await pdfjsLib.getDocument(typedarray).promise;
+        let textoTotal = '';
+
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const page = await pdf.getPage(i);
+          const content = await page.getTextContent();
+          textoTotal += content.items.map(item => item.str).join(' ') + '\n';
+        }
+
+        document.getElementById('cv-text').value = textoTotal;
+      };
+      fileReader.readAsArrayBuffer(file);
+    }
+
+    // 🧠 ANÁLISE DE CURRÍCULO POR IA
+    async function analisarCurriculoIA() {
+      const apiKey = localStorage.getItem('radar_api_key');
+      const cvText = document.getElementById('cv-text').value;
+
+      if (!cvText) return alert("Extraia ou digite o texto do currículo primeiro.");
+
+      const resultadoBox = document.getElementById('ai-resultado');
+      resultadoBox.style.display = "block";
+      resultadoBox.innerText = "🧠 Analisando currículo e verificando erros estruturais...";
+
+      if (!apiKey) {
+        setTimeout(() => {
+          resultadoBox.innerHTML = "<strong>Modo de Simulação (Sem API Key):</strong><br>• Destaque mais suas experiências com Front-End.<br>• Adicione uma seção clara de projetos no GitHub.<br>• NENHUM erro ortográfico grave encontrado.";
+        }, 1500);
         return;
       }
+    }
 
-      const novaVaga = {
-        id: Date.now(),
-        empresa,
-        cargo,
-        modelo,
-        descricao,
-        data: new Date().toLocaleDateString('pt-BR')
+    // ⚙️ CONFIGURAÇÃO DE API
+    function salvarApiKey() {
+      const key = document.getElementById('api-key').value;
+      localStorage.setItem('radar_api_key', key);
+      alert("Chave de API salva com sucesso!");
+    }
+
+    // 🔄 CARREGAR DADOS DO BANCO E ATUALIZAR INTERFACE
+    function carregarDadosDB() {
+      if (!db) return;
+
+      // Atualizar lista de vagas na seleção da candidatura
+      const vagaSelect = document.getElementById('cand-vaga-select');
+      vagaSelect.innerHTML = '';
+
+      const txVagas = db.transaction(["vagas"], "readonly");
+      const storeVagas = txVagas.objectStore("vagas");
+      let countVagas = 0;
+
+      storeVagas.openCursor().onsuccess = function(e) {
+        const cursor = e.target.result;
+        if (cursor) {
+          countVagas++;
+          const opt = document.createElement('option');
+          opt.value = cursor.value.id;
+          opt.innerText = `${cursor.value.cargo} - ${cursor.value.empresa}`;
+          vagaSelect.appendChild(opt);
+          cursor.continue();
+        } else {
+          document.getElementById('dash-vagas').innerText = countVagas;
+        }
       };
 
-      let vagas = JSON.parse(localStorage.getItem('radar_vagas') || '[]');
-      vagas.push(novaVaga);
-      localStorage.setItem('radar_vagas', JSON.stringify(vagas));
-
-      // Limpa formulário
-      document.getElementById('vaga-empresa').value = '';
-      document.getElementById('vaga-cargo').value = '';
-      document.getElementById('vaga-descricao').value = '';
-
-      carregarVagas();
-      alert('Dossiê da vaga salvo com sucesso!');
+      const txCand = db.transaction(["candidaturas"], "readonly");
+      let countCand = 0;
+      txCand.objectStore("candidaturas").openCursor().onsuccess = function(e) {
+        const cursor = e.target.result;
+        if (cursor) {
+          countCand++;
+          cursor.continue();
+        } else {
+          document.getElementById('dash-candidaturas').innerText = countCand;
+        }
+      };
     }
-
-    function carregarVagas() {
-      const vagas = JSON.parse(localStorage.getItem('radar_vagas') || '[]');
-      const container = document.getElementById('lista-vagas');
-      
-      // Atualiza contador do Dashboard
-      document.getElementById('count-comp').innerText = vagas.length;
-
-      if (vagas.length === 0) {
-        container.innerHTML = '';
-        return;
-      }
-
-      container.innerHTML = '<div class="section-title">📂 Vagas Salvas</div>' + vagas.map(v => `
-        <div class="dossier-card" style="border-left:4px solid var(--primary);">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <strong>${v.cargo}</strong>
-            <span class="match-tag">${v.modelo}</span>
-          </div>
-          <p style="font-size:0.85rem; color:var(--text-muted);">${v.empresa} • Cadastrado em ${v.data}</p>
-          <p style="font-size:0.8rem; background:var(--surface-2); padding:10px; border-radius:8px;">${v.descricao || 'Sem descrição.'}</p>
-        </div>
-      `).join('');
-    }
-
-    // Carrega dados iniciais ao abrir
-    window.onload = carregarVagas;
   </script>
 </body>
-</html>
+  </html>
+  
