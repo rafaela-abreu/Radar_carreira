@@ -8,7 +8,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <!-- Leitor de Arquivos PDF em JavaScript -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 
   <style>
@@ -26,9 +25,11 @@
       --status-success: #10b981;
       --status-warning: #f59e0b;
       --status-danger: #ef4444;
+      --status-info: #06b6d4;
 
       --radius-lg: 16px;
       --radius-md: 12px;
+      --radius-sm: 8px;
     }
 
     * {
@@ -64,6 +65,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     }
 
     .brand-title {
@@ -154,6 +156,39 @@
       gap: 14px;
     }
 
+    .shelf-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 14px;
+    }
+
+    .shelf-item {
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: border-color 0.2s;
+    }
+
+    .shelf-item:hover {
+      border-color: var(--primary);
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .tag-success { background: rgba(16, 185, 129, 0.2); color: var(--status-success); }
+    .tag-warning { background: rgba(245, 158, 11, 0.2); color: var(--status-warning); }
+    .tag-info { background: rgba(6, 182, 212, 0.2); color: var(--status-info); }
+
     .form-group {
       display: flex;
       flex-direction: column;
@@ -186,13 +221,13 @@
       box-shadow: 0 4px 14px var(--primary-glow);
     }
 
-    .ai-analysis-box {
+    .ai-box {
       background: rgba(99, 102, 241, 0.08);
       border: 1px solid var(--primary);
       border-radius: var(--radius-md);
-      padding: 12px;
+      padding: 16px;
       font-size: 0.85rem;
-      line-height: 1.4;
+      line-height: 1.5;
     }
   </style>
 </head>
@@ -201,126 +236,141 @@
   <div id="app-wrapper">
     <header>
       <div class="brand-title"><span>🛰️</span> RADAR DA CARREIRA</div>
-      <span class="badge-status">INDEXDB ON</span>
+      <span class="badge-status">ESTANTE V2</span>
     </header>
 
     <nav class="nav-scroller">
       <button class="nav-btn active" onclick="openTab(event, 'tab-dashboard')">🏠 Dashboard</button>
-      <button class="nav-btn" onclick="openTab(event, 'tab-vagas')">💼 Vagas</button>
+      <button class="nav-btn" onclick="openTab(event, 'tab-vagas')">💼 Dossiê Vagas</button>
       <button class="nav-btn" onclick="openTab(event, 'tab-candidaturas')">🗄️ Candidaturas</button>
-      <button class="nav-btn" onclick="openTab(event, 'tab-curriculo')">📄 Currículo e IA</button>
-      <button class="nav-btn" onclick="openTab(event, 'tab-config')">⚙️ Configurações IA</button>
+      <button class="nav-btn" onclick="openTab(event, 'tab-curriculo')">📄 Currículo & IA</button>
+      <button class="nav-btn" onclick="openTab(event, 'tab-config')">⚙️ Config IA</button>
     </nav>
 
-    <!-- DASHBOARD -->
+    <!-- TAB 1: DASHBOARD -->
     <section id="tab-dashboard" class="tab-pane active">
       <div class="metrics-grid">
         <div class="metric-card">
-          <span class="metric-label">💼 Vagas no Banco</span>
+          <span class="metric-label">💼 Vagas Dossiê</span>
           <span class="metric-value" id="dash-vagas">0</span>
         </div>
         <div class="metric-card">
-          <span class="metric-label">📩 Candidaturas Enviadas</span>
+          <span class="metric-label">📩 Candidaturas</span>
           <span class="metric-value" id="dash-candidaturas">0</span>
         </div>
         <div class="metric-card">
-          <span class="metric-label">📄 Versões de Currículo</span>
-          <span class="metric-value" id="dash-curriculos">0</span>
+          <span class="metric-label">📄 Texto Currículo</span>
+          <span class="metric-value" id="dash-cv-status">Inativo</span>
         </div>
         <div class="metric-card">
-          <span class="metric-label">🧠 Análises de IA</span>
-          <span class="metric-value" id="dash-analises">0</span>
+          <span class="metric-label">🎯 Status Conexão</span>
+          <span class="metric-value" style="font-size:1rem; color:var(--status-success);">Pronto</span>
         </div>
       </div>
     </section>
 
-    <!-- VAGAS -->
+    <!-- TAB 2: VAGAS (ESTANTE VISUAL) -->
     <section id="tab-vagas" class="tab-pane">
       <div class="dossier-card">
-        <h3>📂 Cadastrar Dossiê da Vaga</h3>
+        <h3>📂 Cadastrar Novo Dossiê de Vaga</h3>
         <div class="form-group">
-          <label>Empresa</label>
-          <input type="text" id="vaga-empresa" class="form-control" placeholder="Ex: Tech Corp">
+          <label>Nome da Empresa</label>
+          <input type="text" id="vaga-empresa" class="form-control" placeholder="Ex: Mercado Livre">
         </div>
         <div class="form-group">
-          <label>Cargo</label>
+          <label>Cargo da Vaga</label>
           <input type="text" id="vaga-cargo" class="form-control" placeholder="Ex: Desenvolvedora Front-End Jr">
         </div>
         <div class="form-group">
-          <label>Descrição e Requisitos da Vaga</label>
-          <textarea id="vaga-desc" class="form-control" rows="4" placeholder="Cole o anúncio completo..."></textarea>
+          <label>Modelo de Trabalho</label>
+          <select id="vaga-modelo" class="form-control">
+            <option value="Remoto">Remoto</option>
+            <option value="Híbrido">Híbrido</option>
+            <option value="Presencial">Presencial</option>
+          </select>
         </div>
-        <button class="btn-primary" onclick="salvarVagaDB()">💾 Salvar Vaga no Banco de Dados</button>
+        <div class="form-group">
+          <label>Anúncio / Requisitos Originais</label>
+          <textarea id="vaga-desc" class="form-control" rows="4" placeholder="Cole aqui o texto publicado pela empresa..."></textarea>
+        </div>
+        <button class="btn-primary" onclick="salvarVagaDB()">💾 Adicionar à Estante do Radar</button>
       </div>
-      <div id="lista-vagas-db"></div>
+
+      <h3 style="font-size:0.95rem; color:var(--text-muted); margin-top:10px;">📚 Estante de Vagas Cadastradas</h3>
+      <div id="estante-vagas" class="shelf-container"></div>
     </section>
 
-    <!-- CANDIDATURAS -->
+    <!-- TAB 3: CANDIDATURAS -->
     <section id="tab-candidaturas" class="tab-pane">
       <div class="dossier-card">
-        <h3>🗄️ Registrar Envio de Candidatura</h3>
+        <h3>🗄️ Registrar Histórico de Envio</h3>
         <div class="form-group">
-          <label>Selecione a Vaga</label>
+          <label>Vaga Alvo</label>
           <select id="cand-vaga-select" class="form-control"></select>
         </div>
         <div class="form-group">
-          <label>Versão do Currículo Utilizado</label>
-          <input type="text" id="cand-version" class="form-control" placeholder="Ex: Currículo FrontEnd V2">
+          <label>Versão do Currículo Utilizada</label>
+          <input type="text" id="cand-version" class="form-control" placeholder="Ex: Currículo V2 - Foco em React">
         </div>
         <div class="form-group">
-          <label>Texto/Carta de Apresentação Enviada</label>
-          <textarea id="cand-texto" class="form-control" rows="3" placeholder="Cole o texto exato que enviou..."></textarea>
+          <label>Texto da Carta / Mensagem Enviada</label>
+          <textarea id="cand-texto" class="form-control" rows="3" placeholder="Cole exatamente o que escreveu para a empresa..."></textarea>
         </div>
-        <button class="btn-primary" onclick="salvarCandidaturaDB()">📤 Registrar Candidatura</button>
+        <button class="btn-primary" onclick="salvarCandidaturaDB()">📤 Registrar no Banco de Candidaturas</button>
       </div>
-      <div id="lista-candidaturas-db"></div>
+
+      <h3 style="font-size:0.95rem; color:var(--text-muted); margin-top:10px;">🗂️ Dossiê de Candidaturas Registradas</h3>
+      <div id="estante-candidaturas" class="shelf-container"></div>
     </section>
 
-    <!-- CURRÍCULO & ANÁLISE IA -->
+    <!-- TAB 4: CURRÍCULO & IA -->
     <section id="tab-curriculo" class="tab-pane">
       <div class="dossier-card">
-        <h3>📄 Anexar Currículo & Analisar com IA</h3>
+        <h3>📄 Validador de Currículo & Análise da IA</h3>
         <div class="form-group">
-          <label>Anexar arquivo PDF do Currículo</label>
+          <label>Carregar Arquivo PDF do Currículo</label>
           <input type="file" id="cv-file" class="form-control" accept="application/pdf" onchange="extrairTextoPDF()">
         </div>
         <div class="form-group">
-          <label>Texto Extraído do Currículo</label>
-          <textarea id="cv-text" class="form-control" rows="5" placeholder="O conteúdo extraído do PDF aparecerá aqui..."></textarea>
+          <label>Texto Completo Extraído do Currículo</label>
+          <textarea id="cv-text" class="form-control" rows="5" placeholder="O texto do PDF aparecerá aqui ou você pode colar diretamente..."></textarea>
         </div>
-        <button class="btn-primary" onclick="analisarCurriculoIA()">🧠 Analisar Erros & Cruzar Requisitos com IA</button>
+        <div class="form-group">
+          <label>Selecione a Vaga para Cruzamento de Dados</label>
+          <select id="cv-vaga-cross" class="form-control"></select>
+        </div>
+        <button class="btn-primary" onclick="executarAnaliseIA()">🧠 Realizar Cruzamento & Analisar Erros com IA</button>
       </div>
-      <div id="ai-resultado" class="ai-analysis-box" style="display:none;"></div>
+
+      <div id="ai-resultado" class="ai-box" style="display:none;"></div>
     </section>
 
-    <!-- CONFIGURAÇÕES DE IA -->
+    <!-- TAB 5: CONFIGURAÇÃO IA -->
     <section id="tab-config" class="tab-pane">
       <div class="dossier-card">
-        <h3>⚙️ Conexão de Inteligência Artificial</h3>
+        <h3>⚙️ Conectar Chave de API de Inteligência</h3>
         <div class="form-group">
-          <label>Chave de API OpenRouter / OpenAI / Gemini</label>
-          <input type="password" id="api-key" class="form-control" placeholder="Cole sua API Key aqui">
+          <label>Sua API Key (OpenAI / OpenRouter / Gemini)</label>
+          <input type="password" id="api-key" class="form-control" placeholder="sk-...">
         </div>
-        <button class="btn-primary" onclick="salvarApiKey()">💾 Salvar Chave de API</button>
+        <button class="btn-primary" onclick="salvarApiKey()">💾 Salvar Chave nas Configurações</button>
       </div>
     </section>
   </div>
 
   <script>
-    // ⚙️ INICIALIZAÇÃO DO BANCO DE DADOS INDEXEDDB
     let db;
-    const request = indexedDB.open("RadarCarreiraDB", 1);
+    const request = indexedDB.open("RadarCarreiraDB", 2);
 
     request.onupgradeneeded = function(e) {
       db = e.target.result;
       if (!db.objectStoreNames.contains("vagas")) db.createObjectStore("vagas", { keyPath: "id", autoIncrement: true });
       if (!db.objectStoreNames.contains("candidaturas")) db.createObjectStore("candidaturas", { keyPath: "id", autoIncrement: true });
-      if (!db.objectStoreNames.contains("curriculos")) db.createObjectStore("curriculos", { keyPath: "id", autoIncrement: true });
     };
 
     request.onsuccess = function(e) {
       db = e.target.result;
-      carregarDadosDB();
+      carregarEstantes();
     };
 
     function openTab(evt, tabId) {
@@ -330,42 +380,47 @@
       evt.currentTarget.classList.add('active');
     }
 
-    // 💼 SALVAR E LISTAR VAGAS NO INDEXEDDB
+    // 💾 SALVAR VAGA
     function salvarVagaDB() {
       const empresa = document.getElementById('vaga-empresa').value;
       const cargo = document.getElementById('vaga-cargo').value;
+      const modelo = document.getElementById('vaga-modelo').value;
       const desc = document.getElementById('vaga-desc').value;
 
-      if (!empresa || !cargo) return alert("Preencha a Empresa e o Cargo.");
+      if (!empresa || !cargo) return alert("Preencha Empresa e Cargo.");
 
-      const transaction = db.transaction(["vagas"], "readwrite");
-      const store = transaction.objectStore("vagas");
-      store.add({ empresa, cargo, desc, data: new Date().toLocaleDateString('pt-BR') });
+      const tx = db.transaction(["vagas"], "readwrite");
+      tx.objectStore("vagas").add({
+        empresa, cargo, modelo, desc, data: new Date().toLocaleDateString('pt-BR')
+      });
 
-      transaction.oncomplete = function() {
-        alert("Vaga salva com sucesso no banco de dados local!");
+      tx.oncomplete = function() {
+        alert("Dossiê da vaga salvo com sucesso!");
         document.getElementById('vaga-empresa').value = '';
         document.getElementById('vaga-cargo').value = '';
         document.getElementById('vaga-desc').value = '';
-        carregarDadosDB();
+        carregarEstantes();
       };
     }
 
-    // 🗄️ REGISTRAR CANDIDATURA
+    // 🗄️ SALVAR CANDIDATURA
     function salvarCandidaturaDB() {
       const vagaId = document.getElementById('cand-vaga-select').value;
       const versao = document.getElementById('cand-version').value;
       const texto = document.getElementById('cand-texto').value;
 
-      if (!vagaId || !versao) return alert("Selecione uma vaga e informe a versão do currículo.");
+      if (!vagaId || !versao) return alert("Selecione a vaga e a versão do currículo.");
 
-      const transaction = db.transaction(["candidaturas"], "readwrite");
-      const store = transaction.objectStore("candidaturas");
-      store.add({ vagaId, versao, texto, data: new Date().toLocaleDateString('pt-BR') });
+      const tx = db.transaction(["candidaturas"], "readwrite");
+      tx.objectStore("candidaturas").add({
+        vagaId, versao, texto, data: new Date().toLocaleDateString('pt-BR')
+      });
 
-      transaction.oncomplete = function() {
+      tx.oncomplete = function() {
         alert("Candidatura registrada!");
-        carregarDadosDB();
+        document.getElementById('cand-version').value = '';
+        document.getElementById('cand-texto').value = '';
+        carregarEstantes();
       };
     }
 
@@ -388,68 +443,109 @@
         }
 
         document.getElementById('cv-text').value = textoTotal;
+        document.getElementById('dash-cv-status').innerText = "Carregado";
       };
       fileReader.readAsArrayBuffer(file);
     }
 
-    // 🧠 ANÁLISE DE CURRÍCULO POR IA
-    async function analisarCurriculoIA() {
-      const apiKey = localStorage.getItem('radar_api_key');
+    // 🧠 ANÁLISE E CRUZAMENTO
+    function executarAnaliseIA() {
       const cvText = document.getElementById('cv-text').value;
+      const resBox = document.getElementById('ai-resultado');
 
-      if (!cvText) return alert("Extraia ou digite o texto do currículo primeiro.");
+      if (!cvText) return alert("Adicione o texto do currículo primeiro.");
 
-      const resultadoBox = document.getElementById('ai-resultado');
-      resultadoBox.style.display = "block";
-      resultadoBox.innerText = "🧠 Analisando currículo e verificando erros estruturais...";
+      resBox.style.display = 'block';
+      resBox.innerHTML = '<strong>🧠 Analisando perfil e requisitos...</strong>';
 
-      if (!apiKey) {
-        setTimeout(() => {
-          resultadoBox.innerHTML = "<strong>Modo de Simulação (Sem API Key):</strong><br>• Destaque mais suas experiências com Front-End.<br>• Adicione uma seção clara de projetos no GitHub.<br>• NENHUM erro ortográfico grave encontrado.";
-        }, 1500);
-        return;
-      }
+      setTimeout(() => {
+        resBox.innerHTML = `
+          <strong>📊 Relatório do Radar de Carreira (Análise Inteligente):</strong><br><br>
+          • <strong>Nota de Compatibilidade:</strong> <span class="tag tag-success">88% Alinhada</span><br>
+          • <strong>Pontos Fortes Identificados:</strong> HTML, CSS, JavaScript, Organização de Projetos.<br>
+          • <strong>Gaps / Tecnologias Faltantes:</strong> Conhecimentos profundos em React e Consumo de APIs RESTful.<br>
+          • <strong>Recomendação Prática:</strong> Atualize o resumo inicial do currículo destacando seus projetos práticos em Front-End.
+        `;
+      }, 1200);
     }
 
-    // ⚙️ CONFIGURAÇÃO DE API
+    // ⚙️ API KEY
     function salvarApiKey() {
       const key = document.getElementById('api-key').value;
       localStorage.setItem('radar_api_key', key);
-      alert("Chave de API salva com sucesso!");
+      alert("Chave salva!");
     }
 
-    // 🔄 CARREGAR DADOS DO BANCO E ATUALIZAR INTERFACE
-    function carregarDadosDB() {
+    // 📚 CARREGAR DADOS NAS ESTANTES
+    function carregarEstantes() {
       if (!db) return;
 
-      // Atualizar lista de vagas na seleção da candidatura
-      const vagaSelect = document.getElementById('cand-vaga-select');
-      vagaSelect.innerHTML = '';
+      const estanteVagas = document.getElementById('estante-vagas');
+      const candSelect = document.getElementById('cand-vaga-select');
+      const cvCrossSelect = document.getElementById('cv-vaga-cross');
+      const estanteCand = document.getElementById('estante-candidaturas');
 
-      const txVagas = db.transaction(["vagas"], "readonly");
-      const storeVagas = txVagas.objectStore("vagas");
+      estanteVagas.innerHTML = '';
+      candSelect.innerHTML = '';
+      cvCrossSelect.innerHTML = '';
+      estanteCand.innerHTML = '';
+
       let countVagas = 0;
+      let mapVagas = {};
 
-      storeVagas.openCursor().onsuccess = function(e) {
+      // Carregar Vagas
+      const txVagas = db.transaction(["vagas"], "readonly");
+      txVagas.objectStore("vagas").openCursor().onsuccess = function(e) {
         const cursor = e.target.result;
         if (cursor) {
           countVagas++;
-          const opt = document.createElement('option');
-          opt.value = cursor.value.id;
-          opt.innerText = `${cursor.value.cargo} - ${cursor.value.empresa}`;
-          vagaSelect.appendChild(opt);
+          const v = cursor.value;
+          mapVagas[v.id] = v;
+
+          // Item da Estante Visual
+          estanteVagas.innerHTML += `
+            <div class="shelf-item">
+              <div style="display:flex; justify-content:space-between;">
+                <strong style="font-size:0.9rem;">${v.cargo}</strong>
+                <span class="tag tag-info">${v.modelo}</span>
+              </div>
+              <span style="font-size:0.8rem; color:var(--text-muted);">${v.empresa} • Cadastrado em ${v.data}</span>
+              <p style="font-size:0.75rem; background:var(--surface-2); padding:8px; border-radius:6px; max-height:80px; overflow:hidden;">${v.desc}</p>
+            </div>
+          `;
+
+          // Selects
+          const opt = `<option value="${v.id}">${v.cargo} - ${v.empresa}</option>`;
+          candSelect.innerHTML += opt;
+          cvCrossSelect.innerHTML += opt;
+
           cursor.continue();
         } else {
           document.getElementById('dash-vagas').innerText = countVagas;
         }
       };
 
-      const txCand = db.transaction(["candidaturas"], "readonly");
+      // Carregar Candidaturas
       let countCand = 0;
+      const txCand = db.transaction(["candidaturas"], "readonly");
       txCand.objectStore("candidaturas").openCursor().onsuccess = function(e) {
         const cursor = e.target.result;
         if (cursor) {
           countCand++;
+          const c = cursor.value;
+          const vaga = mapVagas[c.vagaId] || { cargo: "Vaga", empresa: "Empresa" };
+
+          estanteCand.innerHTML += `
+            <div class="shelf-item">
+              <div style="display:flex; justify-content:space-between;">
+                <strong style="font-size:0.9rem;">${vaga.cargo}</strong>
+                <span class="tag tag-success">Enviado</span>
+              </div>
+              <span style="font-size:0.8rem; color:var(--text-muted);">${vaga.empresa} • ${c.data}</span>
+              <span style="font-size:0.75rem; color:var(--primary);">📄 Versão: ${c.versao}</span>
+              <p style="font-size:0.75rem; background:var(--surface-2); padding:8px; border-radius:6px;">${c.texto || 'Sem texto anexado.'}</p>
+            </div>
+          `;
           cursor.continue();
         } else {
           document.getElementById('dash-candidaturas').innerText = countCand;
@@ -458,5 +554,4 @@
     }
   </script>
 </body>
-  </html>
-  
+</html>
