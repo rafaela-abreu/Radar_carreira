@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Radar da Carreira - Autônomo</title>
+  <title>Agente de Carreira Autônomo - Rafaela</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 
   <style>
@@ -54,206 +53,127 @@
       --border-color: #ff0055;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-
-    body {
-      background-color: var(--bg-color);
-      color: var(--text-main);
-      font-size: var(--font-size-base);
-      min-height: 100vh;
-      padding: 12px;
-      display: flex;
-      justify-content: center;
-    }
-
-    #app-wrapper {
-      width: 100%;
-      max-width: 800px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    body { background-color: var(--bg-color); color: var(--text-main); font-size: var(--font-size-base); min-height: 100vh; padding: 12px; display: flex; justify-content: center; }
+    #app-wrapper { width: 100%; max-width: 900px; display: flex; flex-direction: column; gap: 12px; }
 
     header {
-      background: var(--surface-card);
-      border: 1px solid var(--border-color);
-      padding: 12px 16px;
-      border-radius: var(--border-radius);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      background: var(--surface-card); border: 1px solid var(--border-color); padding: 12px 16px; border-radius: var(--border-radius); display: flex; justify-content: space-between; align-items: center;
     }
+    .brand-title { font-weight: 800; font-size: 1.1rem; }
+    .status-card { background: var(--surface-card); border: 1px solid var(--border-color); padding: 10px 14px; border-radius: var(--border-radius); font-size: 0.85rem; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; }
 
-    .brand-title {
-      font-weight: 800;
-      font-size: 1.1rem;
-      color: var(--text-main);
-    }
+    .nav-scroller { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+    .nav-btn { background: var(--surface-card); color: var(--text-muted); border: 1px solid var(--border-color); padding: 10px 16px; border-radius: var(--border-radius); font-weight: 600; cursor: pointer; white-space: nowrap; }
+    .nav-btn.active { background: var(--primary-color); color: #fff; border-color: var(--primary-color); }
 
-    .status-card {
-      background: var(--surface-card);
-      border: 1px solid var(--border-color);
-      padding: 10px 14px;
-      border-radius: var(--border-radius);
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
+    .tab-pane { display: none; flex-direction: column; gap: 12px; }
+    .tab-pane.active { display: flex; }
 
-    .nav-scroller {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-    }
+    .card { background: var(--surface-card); border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+    .form-control { background: var(--surface-input); border: 1px solid var(--border-color); color: var(--text-main); padding: 10px 12px; border-radius: var(--border-radius); outline: none; width: 100%; }
+    .btn-primary { background: var(--primary-color); color: white; border: none; padding: 10px 16px; border-radius: var(--border-radius); font-weight: 700; cursor: pointer; text-decoration: none; text-align: center; }
 
-    .nav-btn {
-      background: var(--surface-card);
-      color: var(--text-muted);
-      border: 1px solid var(--border-color);
-      padding: 10px 16px;
-      border-radius: var(--border-radius);
-      font-weight: 600;
-      cursor: pointer;
-      white-space: nowrap;
-    }
+    .shelf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+    .shelf-item { background: var(--surface-card); border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: 14px; display: flex; flex-direction: column; gap: 8px; }
 
-    .nav-btn.active {
-      background: var(--primary-color);
-      color: #fff;
-      border-color: var(--primary-color);
-    }
+    .badge-forte { background: #059669; color: #fff; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; }
+    .badge-media { background: #d97706; color: #fff; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; }
+    .badge-baixa { background: #dc2626; color: #fff; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; }
 
-    .tab-pane {
-      display: none;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .tab-pane.active {
-      display: flex;
-    }
-
-    .card {
-      background: var(--surface-card);
-      border: 1px solid var(--border-color);
-      border-radius: var(--border-radius);
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .card-action {
-      display: flex;
-      gap: 8px;
-    }
-
-    .form-control {
-      background: var(--surface-input);
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-      padding: 10px 12px;
-      border-radius: var(--border-radius);
-      outline: none;
-      width: 100%;
-    }
-
-    .btn-primary {
-      background: var(--primary-color);
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      border-radius: var(--border-radius);
-      font-weight: 700;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .shelf-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 12px;
-    }
-
-    .shelf-item {
-      background: var(--surface-card);
-      border: 1px solid var(--border-color);
-      border-radius: var(--border-radius);
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .tag {
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-size: 0.75rem;
-      font-weight: 700;
-    }
-    .tag-success { background: #059669; color: #fff; }
-    .tag-warning { background: #d97706; color: #fff; }
-
-    .theme-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
+    table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 0.85rem; }
+    th, td { text-align: left; padding: 10px; border-bottom: 1px solid var(--border-color); }
+    th { color: var(--text-muted); }
   </style>
 </head>
 <body>
 
   <div id="app-wrapper">
     <header>
-      <div class="brand-title">🛰️ RADAR AUTÔNOMO</div>
+      <div class="brand-title">🤖 AGENTE DE CARREIRA AUTÔNOMO</div>
       <button class="btn-primary" style="padding:6px 12px; font-size:0.8rem;" onclick="trocarAba('tab-theme')">🎨 Tema</button>
     </header>
 
     <div class="status-card">
-      <span id="status-auto">⚡ Modulo de busca autônoma pronto.</span>
+      <span id="status-auto">⚡ Agente monitorando oportunidades em tempo real...</span>
+      <span id="clock" style="font-weight: 700;">--:--:--</span>
     </div>
 
     <nav class="nav-scroller">
-      <button class="nav-btn active" id="btn-tab-vagas" onclick="trocarAba('tab-vagas')">💼 Vagas</button>
-      <button class="nav-btn" id="btn-tab-curriculo" onclick="trocarAba('tab-curriculo')">📄 Meu Perfil (CV)</button>
-      <button class="nav-btn" id="btn-tab-theme" onclick="trocarAba('tab-theme')">🎨 Temas</button>
+      <button class="nav-btn active" id="btn-tab-vagas" onclick="trocarAba('tab-vagas')">🆕 Vagas Detectadas</button>
+      <button class="nav-btn" id="btn-tab-historico" onclick="trocarAba('tab-historico')">📤 Prateleira de Envios</button>
+      <button class="nav-btn" id="btn-tab-preparacao" onclick="trocarAba('tab-preparacao')">🎯 Simulação & Entrevistas</button>
+      <button class="nav-btn" id="btn-tab-curriculo" onclick="trocarAba('tab-curriculo')">📄 Perfil do Agente</button>
     </nav>
 
-    <!-- ESTANTE DE VAGAS -->
+    <!-- TAB 1: VAGAS DETECTADAS -->
     <section id="tab-vagas" class="tab-pane active">
-      <div class="card-action">
-        <button class="btn-primary" onclick="buscarVagasNaWeb()">🔄 Buscar Vagas Agora</button>
-        <input type="text" class="form-control" placeholder="🔍 Filtrar..." oninput="filtrarVagas(this.value)">
+      <div style="display:flex; gap:8px;">
+        <button class="btn-primary" onclick="executarBuscaAutonoma()">🔄 Executar Varredura Agora</button>
+        <input type="text" class="form-control" placeholder="🔍 Filtrar por empresa, cargo ou tecnologia..." oninput="filtrarVagas(this.value)">
       </div>
       <div id="estante-vagas" class="shelf-grid">
         <div class="card" style="grid-column: 1/-1;">
-          <p style="color:var(--text-muted); text-align:center;">Clique em "Buscar Vagas Agora" para puxar e analisar oportunidades automaticamente.</p>
+          <p style="color:var(--text-muted); text-align:center;">O Agente está pronto para buscar e classificar vagas por aderência.</p>
         </div>
       </div>
     </section>
 
-    <!-- MEU PERFIL (CV PARSER) -->
-    <section id="tab-curriculo" class="tab-pane">
+    <!-- TAB 2: PRATELEIRA DE ENVIOS (HISTÓRICO AUTOMÁTICO) -->
+    <section id="tab-historico" class="tab-pane">
       <div class="card">
-        <h3>📄 Base do Seu Perfil</h3>
-        <p style="font-size:0.8rem; color:var(--text-muted);">Anexe seu currículo em PDF para o robô extrair suas competências e calcular a compatibilidade.</p>
-        <input type="file" id="cv-file" class="form-control" accept="application/pdf" onchange="extrairPDF()">
-        <textarea id="cv-text" class="form-control" rows="6" placeholder="O texto extraído do seu currículo aparecerá aqui..."></textarea>
+        <h3>📚 Prateleira de Candidaturas e Histórico</h3>
+        <p style="font-size:0.8rem; color:var(--text-muted);">Registro automático de vagas enviadas, links diretos, datas e horários exatos de captura.</p>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>Empresa</th>
+                <th>Vaga</th>
+                <th>Data / Hora</th>
+                <th>Aderência</th>
+                <th>Ação</th>
+              </tr>
+            </thead>
+            <tbody id="tabela-historico">
+              <tr>
+                <td colspan="5" style="text-align:center; color:var(--text-muted);">Nenhum envio registrado até o momento.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
 
-    <!-- TEMAS -->
+    <!-- TAB 3: MODO PREPARAÇÃO DE ENTREVISTAS -->
+    <section id="tab-preparacao" class="tab-pane">
+      <div class="card">
+        <h3>🚨 Simulação e Preparação para Entrevista</h3>
+        <p style="font-size:0.8rem; color:var(--text-muted);">Selecione uma empresa salva para gerar o plano de preparação e perguntas simuladas.</p>
+        <select id="select-empresa-preparar" class="form-control" onchange="gerarPlanoPreparacao(this.value)">
+          <option value="">Selecione uma vaga para simular...</option>
+        </select>
+      </div>
+      <div id="painel-preparacao" class="card" style="display:none;"></div>
+    </section>
+
+    <!-- TAB 4: PERFIL BASE DO AGENTE -->
+    <section id="tab-curriculo" class="tab-pane">
+      <div class="card">
+        <h3>🧠 Matriz de Conhecimento do Agente</h3>
+        <p style="font-size:0.8rem; color:var(--text-muted);">O agente utiliza estas informações para calcular a aderência das oportunidades.</p>
+        <input type="file" id="cv-file" class="form-control" accept="application/pdf" onchange="extrairPDF()">
+        <textarea id="cv-text" class="form-control" rows="8" oninput="salvarTextoCV(this.value)" placeholder="Conteúdo do seu currículo extraído..."></textarea>
+      </div>
+    </section>
+
+    <!-- TAB 5: TEMAS -->
     <section id="tab-theme" class="tab-pane">
       <div class="card">
-        <h3>🎨 Escolha a Aparência</h3>
-        <div class="theme-grid">
+        <h3>🎨 Aparência da Central</h3>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
           <button class="btn-primary" style="background:#6366f1;" onclick="aplicarTema('default')">Dark Purple</button>
-          <button class="btn-primary" style="background:#8b5cf6; color:#fff;" onclick="aplicarTema('paper')">Paper Light</button>
+          <button class="btn-primary" style="background:#8b5cf6;" onclick="aplicarTema('paper')">Paper Light</button>
           <button class="btn-primary" style="background:#10b981;" onclick="aplicarTema('emerald')">Emerald</button>
           <button class="btn-primary" style="background:#ff007f;" onclick="aplicarTema('cyberpunk')">Cyberpunk</button>
         </div>
@@ -262,25 +182,35 @@
   </div>
 
   <script>
-    // LISTA DE HABILIDADES PARA CRUZAMENTO
-    const TECH_SKILLS = ['javascript', 'js', 'html', 'css', 'react', 'node', 'sql', 'python', 'git', 'github', 'figma'];
+    const DICIONARIO_AGENTE = ['front-end', 'frontend', 'react', 'javascript', 'js', 'html', 'css', 'typescript', 'node', 'git', 'github', 'figma', 'analista de sistemas', 'sistemas', 'web', 'ui', 'ux', 'api', 'rest', 'automação'];
+    let historicoEnvios = JSON.parse(localStorage.getItem('historico_envios') || '[]');
+    let vagasDetectadasCache = [];
+
+    // RELÓGIO EM TEMPO REAL
+    setInterval(() => {
+      const now = new Date();
+      document.getElementById('clock').innerText = now.toLocaleTimeString('pt-BR');
+    }, 1000);
 
     // GERENCIADOR DE ABAS
     function trocarAba(abaId) {
       document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-
       document.getElementById(abaId).classList.add('active');
       const btn = document.getElementById('btn-' + abaId);
       if (btn) btn.classList.add('active');
     }
 
-    // EXTRAÇÃO DO CURRÍCULO (PDF)
+    function salvarTextoCV(val) {
+      localStorage.setItem('cv_texto_agente', val);
+    }
+
+    // LEITURA DE PDF
     async function extrairPDF() {
       const fileInput = document.getElementById('cv-file');
       if (!fileInput.files[0]) return;
-
-      document.getElementById('status-auto').innerText = "📄 Lendo e extraindo dados do seu currículo...";
+      
+      document.getElementById('status-auto').innerText = "📄 Mapeando competências do currículo...";
       const reader = new FileReader();
 
       reader.onload = async function() {
@@ -297,63 +227,146 @@
           }
 
           document.getElementById('cv-text').value = textoCompleto;
-          localStorage.setItem('cv_texto_base', textoCompleto);
-          document.getElementById('status-auto').innerText = "✅ Perfil carregado e pronto para cruzamento!";
+          salvarTextoCV(textoCompleto);
+          document.getElementById('status-auto').innerText = "✅ Matriz do perfil atualizada com sucesso!";
         } catch (e) {
-          alert("Erro ao ler PDF. Certifique-se de ser um arquivo PDF válido.");
+          alert("Erro ao extrair arquivo PDF.");
         }
       };
       reader.readAsArrayBuffer(fileInput.files[0]);
     }
 
-    // BUSCA DE VAGAS E ANALISE AUTOMÁTICA
-    async function buscarVagasNaWeb() {
+    // BUSCA E ANÁLISE DE ADERÊNCIA
+    async function executarBuscaAutonoma() {
       const status = document.getElementById('status-auto');
       const estante = document.getElementById('estante-vagas');
-      status.innerText = "🛰️ Buscando vagas em tempo real e calculando compatibilidade...";
+      status.innerText = "🔎 Agente varrendo mercado de TI e analisando aderência...";
       estante.innerHTML = '';
 
-      const cvTexto = localStorage.getItem('cv_texto_base') || document.getElementById('cv-text').value;
-      const skillsCv = TECH_SKILLS.filter(s => cvTexto.toLowerCase().includes(s));
+      const cvTexto = localStorage.getItem('cv_texto_agente') || document.getElementById('cv-text').value || '';
+      const cvSkills = DICIONARIO_AGENTE.filter(s => cvTexto.toLowerCase().includes(s));
 
       try {
-        // Busca vagas remotas em API pública segura
-        const res = await fetch('https://remotive.com/api/remote-jobs?category=software-dev&limit=10');
+        const res = await fetch('https://remotive.com/api/remote-jobs?category=software-dev&search=front%20end');
         const data = await res.json();
-        const vagas = data.jobs;
+        vagasDetectadasCache = data.jobs.slice(0, 15);
 
-        status.innerText = `✅ ${vagas.length} vagas encontradas e analisadas!`;
+        status.innerText = `✅ ${vagasDetectadasCache.length} oportunidades mapeadas e classificadas!`;
 
-        vagas.forEach(vaga => {
-          const desc = vaga.description.replace(/(<([^>]+)>)/gi, ""); // Remove HTML
-          const descLower = desc.toLowerCase();
+        vagasDetectadasCache.forEach((vaga, idx) => {
+          const descLimpa = vaga.description.replace(/(<([^>]+)>)/gi, "");
+          const vagaSkills = DICIONARIO_AGENTE.filter(s => (vaga.title + " " + descLimpa).toLowerCase().includes(s));
           
-          // Cruzamento de dados
-          const skillsVaga = TECH_SKILLS.filter(s => descLower.includes(s));
-          let match = 100;
-          if (skillsVaga.length > 0) {
-            const batem = skillsVaga.filter(s => skillsCv.includes(s));
-            match = Math.round((batem.length / skillsVaga.length) * 100);
+          let pontuacao = 50;
+          let emComum = [];
+
+          if (vagaSkills.length > 0 && cvSkills.length > 0) {
+            emComum = vagaSkills.filter(s => cvSkills.includes(s));
+            pontuacao = Math.round((emComum.length / vagaSkills.length) * 100);
           }
+
+          let badgeClasse = 'badge-media';
+          let rotulo = '🟡 Possível Aderência';
+          if (pontuacao >= 75) { badgeClasse = 'badge-forte'; rotulo = '🟢 Forte Aderência'; }
+          else if (pontuacao < 40) { badgeClasse = 'badge-baixa'; rotulo = '🔴 Baixa Aderência'; }
+
+          const dataHoraAtual = new Date().toLocaleString('pt-BR');
 
           estante.innerHTML += `
             <div class="shelf-item">
               <div style="display:flex; justify-content:space-between; align-items:center;">
-                <strong>${vaga.title}</strong>
-                <span class="tag ${match >= 50 ? 'tag-success' : 'tag-warning'}">${match}% Match</span>
+                <strong style="font-size:0.95rem;">${vaga.title}</strong>
+                <span class="${badgeClasse}">${pontuacao}% — ${rotulo}</span>
               </div>
-              <span style="font-size:0.8rem; color:var(--text-muted);">${vaga.company_name} • ${vaga.candidate_required_location}</span>
-              <p style="font-size:0.75rem; background:var(--surface-input); padding:8px; border-radius:6px; max-height:80px; overflow:hidden;">${desc.substring(0, 150)}...</p>
-              <a href="${vaga.url}" target="_blank" class="btn-primary" style="text-align:center; text-decoration:none; font-size:0.8rem; margin-top:4px;">Ver Vaga Original</a>
+              <span style="font-size:0.8rem; color:var(--text-muted);">${vaga.company_name} • Mapeado em: ${dataHoraAtual}</span>
+              <p style="font-size:0.75rem; background:var(--surface-input); padding:8px; border-radius:6px; max-height:80px; overflow:hidden;">${descLimpa.substring(0, 150)}...</p>
+              ${emComum.length > 0 ? `<span style="font-size:0.7rem; color:var(--primary-color);">✔ Puntos de convergência: ${emComum.join(', ')}</span>` : ''}
+              
+              <div style="display:flex; gap:6px; margin-top:6px;">
+                <a href="${vaga.url}" target="_blank" class="btn-primary" style="flex:1; font-size:0.75rem;">Acessar Vaga</a>
+                <button class="btn-primary" style="background:#059669; font-size:0.75rem;" onclick="aprovarECandidatar(${idx}, '${pontuacao}%')">Aprovar Envio</button>
+              </div>
             </div>
           `;
         });
       } catch (err) {
-        status.innerText = "⚠️ Erro ao conectar com o serviço de vagas.";
+        status.innerText = "⚠️ Falha de comunicação com as redes de vagas.";
       }
     }
 
-    // FILTRAGEM
+    // REGISTRO DE HISTÓRICO AUTOMÁTICO
+    function aprovarECandidatar(idx, matchPct) {
+      const vaga = vagasDetectadasCache[idx];
+      if (!vaga) return;
+
+      const registro = {
+        empresa: vaga.company_name,
+        cargo: vaga.title,
+        dataHora: new Date().toLocaleString('pt-BR'),
+        aderencia: matchPct,
+        link: vaga.url
+      };
+
+      historicoEnvios.unshift(registro);
+      localStorage.setItem('historico_envios', JSON.stringify(historicoEnvios));
+      renderizarHistorico();
+      atualizarSelectPreparacao();
+      alert(`Candidatura registrada na prateleira para ${vaga.company_name}!`);
+    }
+
+    function renderizarHistorico() {
+      const tbody = document.getElementById('tabela-historico');
+      if (historicoEnvios.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">Nenhum envio registrado.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = '';
+      historicoEnvios.forEach(item => {
+        tbody.innerHTML += `
+          <tr>
+            <td><strong>${item.empresa}</strong></td>
+            <td>${item.cargo}</td>
+            <td>${item.dataHora}</td>
+            <td><span class="badge-forte">${item.aderencia}</span></td>
+            <td><a href="${item.link}" target="_blank" style="color:var(--primary-color);">Ver Link</a></td>
+          </tr>
+        `;
+      });
+    }
+
+    function atualizarSelectPreparacao() {
+      const select = document.getElementById('select-empresa-preparar');
+      select.innerHTML = '<option value="">Selecione uma vaga para simular...</option>';
+      historicoEnvios.forEach((item, index) => {
+        select.innerHTML += `<option value="${index}">${item.empresa} - ${item.cargo}</option>`;
+      });
+    }
+
+    // MODO PREPARAÇÃO DE ENTREVISTA
+    function gerarPlanoPreparacao(index) {
+      const painel = document.getElementById('painel-preparacao');
+      if (index === "") { painel.style.display = 'none'; return; }
+
+      const item = historicoEnvios[index];
+      painel.style.display = 'flex';
+      painel.innerHTML = `
+        <h3>🎯 Roteiro de Preparação: ${item.empresa}</h3>
+        <p><strong>Cargo:</strong> ${item.cargo} | <strong>Aderência Registrada:</strong> ${item.aderencia}</p>
+        <hr style="border-color:var(--border-color); margin:8px 0;">
+        
+        <strong style="color:var(--primary-color);">🏢 Sobre a Empresa e Tecnologias:</strong>
+        <p style="font-size:0.8rem;">Revise os projetos focados em ${item.cargo}. Destaque soluções de código limpo, arquitetura e automação.</p>
+
+        <strong style="color:var(--primary-color); margin-top:8px;">🎤 Perguntas Simuladas para Treinar:</strong>
+        <ul style="font-size:0.8rem; padding-left:18px; display:flex; flex-direction:column; gap:6px;">
+          <li>"Como você estrutura uma aplicação Front-end escalável?"</li>
+          <li>"Explique como usou inteligência artificial ou automação para acelerar seu fluxo de trabalho."</li>
+          <li>"Qual foi o desafio técnico mais complexo que você resolveu recentemente?"</li>
+        </ul>
+      `;
+    }
+
     function filtrarVagas(termo) {
       const itens = document.querySelectorAll('.shelf-item');
       itens.forEach(i => {
@@ -361,19 +374,22 @@
       });
     }
 
-    // TEMA
     function aplicarTema(t) {
       document.body.className = t === 'default' ? '' : 'theme-' + t;
       localStorage.setItem('radar_theme', t);
     }
 
-    // INICIALIZAÇÃO
+    // INICIALIZAÇÃO AUTOMÁTICA
     window.addEventListener('DOMContentLoaded', () => {
-      const cvSalvo = localStorage.getItem('cv_texto_base');
+      const cvSalvo = localStorage.getItem('cv_texto_agente');
       if (cvSalvo) document.getElementById('cv-text').value = cvSalvo;
 
       const temaSalvo = localStorage.getItem('radar_theme');
       if (temaSalvo) aplicarTema(temaSalvo);
+
+      renderizarHistorico();
+      atualizarSelectPreparacao();
+      executarBuscaAutonoma();
     });
   </script>
 </body>
