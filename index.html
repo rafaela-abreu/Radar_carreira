@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Radar de Carreira</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="app">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+      <div class="brand">
+        <div class="brand-icon">◆</div>
+
+        <div>
+          <strong>Radar</strong>
+          <span>de Carreira</span>
+        </div>
+      </div>
+
+      <nav>
+
+        <button class="nav-item active" data-page="inicio">
+          <span>⌂</span>
+          Início
+        </button>
+
+        <button class="nav-item" data-page="vagas">
+          <span>⌕</span>
+          Radar de vagas
+        </button>
+
+        <button class="nav-item" data-page="candidaturas">
+          <span>↗</span>
+          Candidaturas
+        </button>
+
+        <button class="nav-item" data-page="alertas">
+          <span>⚠</span>
+          Alertas
+          <b class="notification">2</b>
+        </button>
+
+        <button class="nav-item" data-page="mercado">
+          <span>◈</span>
+          Mercado
+        </button>
+
+        <button class="nav-item" data-page="desenvolvimento">
+          <span>✦</span>
+          Meu desenvolvimento
+        </button>
+
+        <button class="nav-item" data-page="projetos">
+          <span>▣</span>
+          Projetos
+        </button>
+
+        <button class="nav-item" data-page="personalizacao">
+          <span>⚙</span>
+          Personalização
+        </button>
+
+      </nav>
+
+      <div class="sidebar-footer">
+        <span>V1.0</span>
+        <small>Seu radar pessoal</small>
+      </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+      <header class="topbar">
+
+        <div>
+          <p class="eyebrow">DOMINGO · 06 SET 2026</p>
+          <h1 id="page-title">Seu radar</h1>
+        </div>
+
+        <div class="profile">
+          <div class="avatar">R</div>
+
+          <div>
+            <strong>Rafaela</strong>
+            <small>Engenharia de Software</small>
+          </div>
+        </div>
+
+      </header>
+
+
+      <!-- INÍCIO -->
+
+      <section class="page active-page" id="inicio">
+
+        <div class="hero">
+
+          <div>
+
+            <span class="tag">RADAR ATIVO</span>
+
+            <h2>
+              Encontre oportunidades.
+              <br>
+              Evolua com estratégia.
+            </h2>
+
+            <p>
+              Um espaço pessoal para acompanhar vagas,
+              mercado, competências e sua evolução profissional.
+            </p>
+
+          </div>
+
+          <div class="hero-symbol">◎</div>
+
+        </div>
+
+
+        <div class="stats">
+
+          <div class="stat-card">
+            <span>Vagas novas</span>
+            <strong>12</strong>
+            <small>últimas 24 horas</small>
+          </div>
+
+          <div class="stat-card highlight">
+            <span>Matches fortes</span>
+            <strong>3</strong>
+            <small>acima de 90%</small>
+          </div>
+
+          <div class="stat-card">
+            <span>Candidaturas</span>
+            <strong>17</strong>
+            <small>este mês</small>
+          </div>
+
+          <div class="stat-card">
+            <span>Entrevistas</span>
+            <strong>2</strong>
+            <small>aguardando preparação</small>
+          </div>
+
+        </div>
+
+
+        <div class="section-header">
+          <div>
+            <span class="eyebrow">ATENÇÃO</span>
+            <h3>Oportunidades prioritárias</h3>
+          </div>
+
+          <button class="text-button" onclick="openPage('vagas')">
+            Ver todas →
+          </button>
+        </div>
+
+
+        <div class="shelf">
+
+          <article class="book-card priority">
+
+            <div class="book-cover cover-one">
+              <span>98%</span>
+              <small>MATCH</small>
+            </div>
+
+            <div class="book-info">
+              <span class="company">Empresa Horizonte</span>
+              <h4>Engenheira de Software</h4>
+
+              <p>
+                Arquitetura · APIs · Automação · IA
+              </p>
+
+              <div class="card-footer">
+                <span class="fresh">● publicada há 8 min</span>
+                <button onclick="showMessage('Vaga aberta para análise.')">
+                  Analisar
+                </button>
+              </div>
+            </div>
+
+          </article>
+
+
+          <article class="book-card">
+
+            <div class="book-cover cover-two">
+              <span>94%</span>
+              <small>MATCH</small>
+            </div>
+
+            <div class="book-info">
+              <span class="company">Núcleo Digital</span>
+              <h4>Software Engineer Jr.</h4>
+
+              <p>
+                Backend · Git · APIs · Cloud
+              </p>
+
+              <div class="card-footer">
+                <span>● publicada há 24 min</span>
+                <button onclick="showMessage('Vaga aberta para análise.')">
+                  Analisar
+                </button>
+              </div>
+            </div>
+
+          </article>
+
+
+          <article class="book-card">
+
+            <div class="book-cover cover-three">
+              <span>91%</span>
+              <small>MATCH</small>
+            </div>
+
+            <div class="book-info">
+              <span class="company">Atlas Tech</span>
+              <h4>Desenvolvedora Full Stack</h4>
+
+              <p>
+                JavaScript · APIs · UX · Banco de dados
+              </p>
+
+              <div class="card-footer">
+                <span>● publicada há 1 h</span>
+                <button onclick="showMessage('Vaga aberta para análise.')">
+                  Analisar
+                </button>
+              </div>
+            </div>
+
+          </article>
+
+        </div>
+
+
+        <div class="dashboard-grid">
+
+          <div class="panel">
+
+            <span class="eyebrow">MERCADO</span>
+
+            <h3>O que merece sua atenção</h3>
+
+            <div class="market-item">
+              <span class="market-icon">AI</span>
+
+              <div>
+                <strong>IA aplicada ao desenvolvimento</strong>
+                <p>Alta recorrência nas vagas monitoradas.</p>
+              </div>
+
+              <b>↑</b>
+            </div>
+
+
+            <div class="market-item">
+              <span class="market-icon">☁</span>
+
+              <div>
+                <strong>Cloud</strong>
+                <p>Competência recorrente em vagas de engenharia.</p>
+              </div>
+
+              <b>↑</b>
+            </div>
+
+
+            <div class="market-item">
+              <span class="market-icon">API</span>
+
+              <div>
+                <strong>Arquitetura de APIs</strong>
+                <p>Presente em grande parte das oportunidades.</p>
+              </div>
+
+              <b>→</b>
+            </div>
+
+          </div>
+
+
+          <div class="panel action-panel">
+
+            <span class="eyebrow">PRÓXIMA AÇÃO</span>
+
+            <h3>Uma coisa por vez.</h3>
+
+            <p>
+              A recomendação atual é aprofundar uma competência
+              antes de iniciar outro projeto.
+            </p>
+
+            <button onclick="openPage('desenvolvimento')">
+              Ver recomendação →
+            </button>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- VAGAS -->
+
+      <section class="page" id="vagas">
+
+        <div class="page-heading">
+          <div>
+            <span class="eyebrow">RADAR</span>
+            <h2>Vagas encontradas</h2>
+          </div>
+
+          <div class="filter">
+            <button class="filter-active">Todas</button>
+            <button>90%+</button>
+            <button>Recentes</button>
+          </div>
+        </div>
+
+
+        <div class="job-grid">
+
+          <article class="job-card">
+
+            <div class="job-cover cover-one">
+              <span>98%</span>
+            </div>
+
+            <div class="job-content">
+
+              <span class="fresh">● 8 minutos atrás</span>
+
+              <h3>Engenheira de Software</h3>
+
+              <strong>Empresa Horizonte</strong>
+
+              <p>
+                Desenvolvimento de soluções, APIs,
+                automação e arquitetura de software.
+              </p>
+
+              <div class="chips">
+                <span>APIs</span>
+                <span>IA</span>
+                <span>Arquitetura</span>
+              </div>
+
+              <button onclick="showMessage('Candidatura preparada para revisão.')">
+                Analisar oportunidade
+              </button>
+
+            </div>
+
+          </article>
+
+
+          <article class="job-card">
+
+            <div class="job-cover cover-two">
+              <span>94%</span>
+            </div>
+
+            <div class="job-content">
+
+              <span class="fresh">● 24 minutos atrás</span>
+
+              <h3>Software Engineer Jr.</h3>
+
+              <strong>Núcleo Digital</strong>
+
+              <p>
+                Desenvolvimento backend, integração
+                de APIs e serviços em cloud.
+              </p>
+
+              <div class="chips">
+                <span>Backend</span>
+                <span>Cloud</span>
+                <span>Git</span>
+              </div>
+
+              <button onclick="showMessage('Candidatura preparada para revisão.')">
+                Analisar oportunidade
+              </button>
+
+            </div>
+
+          </article>
+
+        </div>
+
+      </section>
+
+
+      <!-- CANDIDATURAS -->
+
+      <section class="page" id="candidaturas">
+
+        <div class="page-heading">
+
+          <div>
+            <span class="eyebrow">HISTÓRICO</span>
+            <h2>Minhas candidaturas</h2>
+          </div>
+
+        </div>
+
+
+        <div class="shelf">
+
+          <article class="application-card">
+            <div class="mini-cover cover-one">98%</div>
+
+            <div>
+              <span class="company">Empresa Horizonte</span>
+              <h3>Engenheira de Software</h3>
+              <p>Enviado em 06/09/2026</p>
+            </div>
+
+            <span class="status waiting">Aguardando</span>
+          </article>
+
+
+          <article class="application-card">
+            <div class="mini-cover cover-two">94%</div>
+
+            <div>
+              <span class="company">Núcleo Digital</span>
+              <h3>Software Engineer Jr.</h3>
+              <p>Enviado em 05/09/2026</p>
+            </div>
+
+            <span class="status interview">Entrevista</span>
+          </article>
+
+        </div>
+
+      </section>
+
+
+      <!-- ALERTAS -->
+
+      <section class="page" id="alertas">
+
+        <div class="page-heading">
+
+          <div>
+            <span class="eyebrow">CENTRAL</span>
+            <h2>Alertas</h2>
+          </div>
+
+        </div>
+
+
+        <div class="alert-list">
+
+          <article class="alert-card critical">
+
+            <div class="alert-icon">🔥</div>
+
+            <div>
+
+              <span class="eyebrow">MATCH EXCEPCIONAL</span>
+
+              <h3>Nova vaga com 98% de aderência</h3>
+
+              <p>
+                Empresa Horizonte publicou uma oportunidade
+                há poucos minutos.
+              </p>
+
+            </div>
+
+            <button onclick="showMessage('Alerta analisado.')">
+              Abrir
+            </button>
+
+          </article>
+
+
+          <article class="alert-card">
+
+            <div class="alert-icon">📧</div>
+
+            <div>
+
+              <span class="eyebrow">RETORNO</span>
+
+              <h3>Possível entrevista detectada</h3>
+
+              <p>
+                Uma mensagem corresponde a uma candidatura
+                registrada no seu histórico.
+              </p>
+
+            </div>
+
+            <button onclick="showMessage('Integração Gmail será adicionada em uma versão futura.')">
+              Ver
+            </button>
+
+          </article>
+
+        </div>
+
+      </section>
+
+
+      <!-- MERCADO -->
+
+      <section class="page" id="mercado">
+
+        <div class="page-heading">
+
+          <div>
+            <span class="eyebrow">INTELIGÊNCIA</span>
+            <h2>Radar do mercado</h2>
+          </div>
+
+        </div>
+
+
+        <div class="dashboard-grid">
+
+          <div class="panel">
+
+            <span class="eyebrow">TECNOLOGIAS</span>
+
+            <h3>Movimentos observados</h3>
+
+            <div class="progress-item">
+              <div>
+                <span>IA aplicada</span>
+                <b>88%</b>
+              </div>
+              <div class="progress"><i style="width:88%"></i></div>
+            </div>
+
+            <div class="progress-item">
+              <div>
+                <span>Cloud</span>
+                <b>74%</b>
+              </div>
+              <div class="progress"><i style="width:74%"></i></div>
+            </div>
+
+            <div class="progress-item">
+              <div>
+                <span>APIs</span>
+                <b>69%</b>
+              </div>
+              <div class="progress"><i style="width:69%"></i></div>
+            </div>
+
+          </div>
+
+
+          <div class="panel">
+
+            <span class="eyebrow">RECOMENDAÇÃO</span>
+
+            <h3>Não estude tudo.</h3>
+
+            <p>
+              O sistema deve identificar quais mudanças
+              realmente possuem relevância para sua trajetória
+              profissional.
+            </p>
+
+            <button onclick="openPage('desenvolvimento')">
+              Ver estratégia
+            </button>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- DESENVOLVIMENTO -->
+
+      <section class="page" id="desenvolvimento">
+
+        <div class="page-heading">
+
+          <div>
+            <span class="eyebrow">EVOLUÇÃO</span>
+            <h2>Meu desenvolvimento</h2>
+          </div>
+
+        </div>
+
+
+        <div class="development">
+
+          <article class="development-card priority-card">
+
+            <span class="priority-label">PRIORIDADE ATUAL</span>
+
+            <h3>IA aplicada ao desenvolvimento</h3>
+
+            <p>
+              Aprofundar conceitos de integração de IA,
+              agentes, automação e uso responsável de modelos.
+            </p>
+
+            <div class="recommendations">
+
+              <div>
+                <span>📚</span>
+                <strong>Estudar</strong>
+                <small>Agentes e APIs de IA</small>
+              </div>
+
+              <div>
+                <span>🛠️</span>
+                <strong>Criar</strong>
+                <small>Um projeto demonstrável</small>
+              </div>
+
+              <div>
+                <span>📖</span>
+                <strong>Ler</strong>
+                <small>Arquitetura de software</small>
+              </div>
+
+            </div>
+
+          </article>
+
+
+          <article class="development-card">
+
+            <span class="eyebrow">DIAGNÓSTICO</span>
+
+            <h3>Próximos passos</h3>
+
+            <ul class="check-list">
+
+              <li>
+                <span>✓</span>
+                Consolidar projetos existentes
+              </li>
+
+              <li>
+                <span>✓</span>
+                Aprofundar arquitetura
+              </li>
+
+              <li>
+                <span>○</span>
+                Ampliar prática em cloud
+              </li>
+
+              <li>
+                <span>○</span>
+                Simular entrevistas técnicas
+              </li>
+
+            </ul>
+
+          </article>
+
+        </div>
+
+      </section>
+
+
+      <!-- PROJETOS -->
+
+      <section class="page" id="projetos">
+
+        <div class="page-heading">
+
+          <div>
+            <span class="eyebrow">BIBLIOTECA</span>
+            <h2>Meus projetos</h2>
+          </div>
+
+        </div>
+
+
+        <div class="project-shelf">
+
+          <article class="project-book">
+
+            <div class="project-cover">
+              <span>NEURÓVIA</span>
+              <small>PORTFOLIO · GAME</small>
+            </div>
+
+            <h3>Neuróvia</h3>
+            <p>Projeto interativo e experimental.</p>
+
+          </article>
+
+
+          <article class="project-book">
+
+            <div class="project-cover">
+              <span>ESTAÇÃO</span>
+              <small>SOFTWARE · IA</small>
+            </div>
+
+            <h3>Estação-Rafeka</h3>
+            <p>Ambiente central de soluções.</p>
+
+          </article>
+
+
+          <article class="project-book">
+
+            <div class="project-cover">
+              <span>DROPX</span>
+              <small>ECOMMERCE</small>
+            </div>
+
+            <h3>Shopping Metaverso</h3>
+            <p>Experiência de comércio digital.</p>
+
+          </article>
+
+
+          <article class="project-book">
+
+            <div class="project-cover">
+              <span>LAS VEGAS</span>
+              <small>COMÉRCIO</small>
+            </div>
+
+            <h3>Clube Las Vegas</h3>
+            <p>Projeto de comércio e experiência.</p>
+
+          </article>
+
+        </div>
+
+      </section>
+
+
+      <!-- PERSONALIZAÇÃO -->
+
+      <section class="page" id="personalizacao">
+
+        <div class="page-heading">
+
+          <div>
+            <span class="eyebrow">APARÊNCIA</span>
+            <h2>Personalização</h2>
+          </div>
+
+        </div>
+
+
+        <div class="settings-panel">
+
+          <label>
+            Fonte
+
+            <select id="fontSelect">
+
+              <option value="Inter">Inter</option>
+              <option value="Georgia">Georgia</option>
+              <option value="Arial">Arial</option>
+              <option value="Verdana">Verdana</option>
+
+            </select>
+
+          </label>
+
+
+          <label>
+            Tamanho dos cards
+
+            <input
+              type="range"
+              id="cardSize"
+              min="180"
+              max="300"
+              value="230"
+            >
+
+          </label>
+
+
+          <label>
+            Cor de destaque
+
+            <input
+              type="color"
+              id="accentColor"
+              value="#8b5cf6"
+            >
+
+          </label>
+
+
+          <button id="themeButton">
+            Alternar tema
+          </button>
+
+        </div>
+
+      </section>
+
+
+    </main>
+
+  </div>
+
+
+  <div id="toast"></div>
+
+  <script src="app.js"></script>
+
+</body>
+  </html>
