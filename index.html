@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Radar da Carreira - Rafaela</title>
+  <title>Radar da Carreira - Autônomo</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
@@ -16,130 +16,55 @@
 
   <div id="app-wrapper">
     <header>
-      <div class="brand-title"><span>🛰️</span> RADAR DA CARREIRA</div>
-      <span class="badge-status">SISTEMA MODULAR</span>
+      <div class="brand-title"><span>🛰️</span> RADAR AUTÔNOMO</div>
+      <button class="btn-theme-toggle" onclick="openTab(event, 'tab-theme')">🎨 Tema</button>
     </header>
 
+    <div id="status-bar" class="status-card">
+      <span id="status-auto">⚡ Modulo de captura autônoma pronto.</span>
+    </div>
+
     <nav class="nav-scroller">
-      <button class="nav-btn active" onclick="openTab(event, 'tab-dashboard')">🏠 Dashboard</button>
-      <button class="nav-btn" onclick="openTab(event, 'tab-vagas')">💼 Dossiê Vagas</button>
+      <button class="nav-btn active" onclick="openTab(event, 'tab-vagas')">💼 Vagas Encontradas</button>
       <button class="nav-btn" onclick="openTab(event, 'tab-candidaturas')">🗄️ Candidaturas</button>
-      <button class="nav-btn" onclick="openTab(event, 'tab-curriculo')">📄 Currículo & IA</button>
-      <button class="nav-btn" onclick="openTab(event, 'tab-config')">⚙️ Config IA</button>
+      <button class="nav-btn" onclick="openTab(event, 'tab-curriculo')">📄 Meu Perfil (CV)</button>
+      <button class="nav-btn" onclick="openTab(event, 'tab-theme')">🎨 Apagador/Tema</button>
     </nav>
 
-    <!-- DASHBOARD -->
-    <section id="tab-dashboard" class="tab-pane active">
-      <div class="metrics-grid">
-        <div class="metric-card">
-          <span class="metric-label">💼 Vagas Dossiê</span>
-          <span class="metric-value" id="dash-vagas">0</span>
-        </div>
-        <div class="metric-card">
-          <span class="metric-label">📩 Candidaturas</span>
-          <span class="metric-value" id="dash-candidaturas">0</span>
-        </div>
-        <div class="metric-card">
-          <span class="metric-label">📄 Texto Currículo</span>
-          <span class="metric-value" id="dash-cv-status">Inativo</span>
-        </div>
-        <div class="metric-card">
-          <span class="metric-label">🎯 Status Conexão</span>
-          <span class="metric-value" style="font-size:1rem; color:var(--status-success);">Pronto</span>
-        </div>
+    <!-- ESTANTE DE VAGAS -->
+    <section id="tab-vagas" class="tab-pane active">
+      <div class="card-action">
+        <button class="btn-primary" onclick="rodarBuscaAutonoma()">🔄 Varrer Web Agora</button>
+        <input type="text" class="form-control" placeholder="🔍 Filtrar vagas..." oninput="filtrarVagas(this.value)">
       </div>
-    </section>
-
-    <!-- VAGAS -->
-    <section id="tab-vagas" class="tab-pane">
-      <div class="dossier-card">
-        <h3>📂 Cadastrar Novo Dossiê de Vaga</h3>
-        <div class="form-group">
-          <label>Nome da Empresa</label>
-          <input type="text" id="vaga-empresa" class="form-control" placeholder="Ex: Mercado Livre">
-        </div>
-        <div class="form-group">
-          <label>Cargo da Vaga</label>
-          <input type="text" id="vaga-cargo" class="form-control" placeholder="Ex: Desenvolvedora Front-End Jr">
-        </div>
-        <div class="form-group">
-          <label>Modelo de Trabalho</label>
-          <select id="vaga-modelo" class="form-control">
-            <option value="Remoto">Remoto</option>
-            <option value="Híbrido">Híbrido</option>
-            <option value="Presencial">Presencial</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Anúncio / Requisitos Originais</label>
-          <textarea id="vaga-desc" class="form-control" rows="4" placeholder="Cole aqui o texto publicado pela empresa..."></textarea>
-        </div>
-        <button class="btn-primary" onclick="salvarVagaDB()">💾 Adicionar à Estante do Radar</button>
-      </div>
-
-      <div class="form-group" style="margin-top:10px;">
-        <label>🔍 Buscar nas Vagas Cadastradas</label>
-        <input type="text" class="form-control" placeholder="Digite cargo ou empresa..." oninput="filtrarVagas(this.value)">
-      </div>
-
-      <h3 style="font-size:0.95rem; color:var(--text-muted); margin-top:10px;">📚 Estante de Vagas Cadastradas</h3>
-      <div id="estante-vagas" class="shelf-container"></div>
+      <div id="estante-vagas" class="shelf-grid"></div>
     </section>
 
     <!-- CANDIDATURAS -->
     <section id="tab-candidaturas" class="tab-pane">
-      <div class="dossier-card">
-        <h3>🗄️ Registrar Histórico de Envio</h3>
-        <div class="form-group">
-          <label>Vaga Alvo</label>
-          <select id="cand-vaga-select" class="form-control"></select>
-        </div>
-        <div class="form-group">
-          <label>Versão do Currículo Utilizada</label>
-          <input type="text" id="cand-version" class="form-control" placeholder="Ex: Currículo V2 - Foco em React">
-        </div>
-        <div class="form-group">
-          <label>Texto da Carta / Mensagem Enviada</label>
-          <textarea id="cand-texto" class="form-control" rows="3" placeholder="Cole exatamente o que escreveu para a empresa..."></textarea>
-        </div>
-        <button class="btn-primary" onclick="salvarCandidaturaDB()">📤 Registrar no Banco de Candidaturas</button>
-      </div>
-
-      <h3 style="font-size:0.95rem; color:var(--text-muted); margin-top:10px;">🗂️ Dossiê de Candidaturas Registradas</h3>
-      <div id="estante-candidaturas" class="shelf-container"></div>
+      <div id="estante-candidaturas" class="shelf-grid"></div>
     </section>
 
-    <!-- CURRÍCULO & IA -->
+    <!-- MEU PERFIL (CV PARSER) -->
     <section id="tab-curriculo" class="tab-pane">
-      <div class="dossier-card">
-        <h3>📄 Validador de Currículo & Análise da IA</h3>
-        <div class="form-group">
-          <label>Carregar Arquivo PDF do Currículo</label>
-          <input type="file" id="cv-file" class="form-control" accept="application/pdf" onchange="extrairTextoPDF()">
-        </div>
-        <div class="form-group">
-          <label>Texto Completo Extraído do Currículo</label>
-          <textarea id="cv-text" class="form-control" rows="5" placeholder="O texto do PDF aparecerá aqui ou você pode colar diretamente..."></textarea>
-        </div>
-        <div class="form-group">
-          <label>Selecione a Vaga para Cruzamento de Dados</label>
-          <select id="cv-vaga-cross" class="form-control"></select>
-        </div>
-        <button class="btn-primary" onclick="executarAnaliseIA()">🧠 Realizar Cruzamento & Analisar Erros com IA</button>
+      <div class="card">
+        <h3>📄 Base do Seu Perfil</h3>
+        <p style="font-size:0.8rem; color:var(--text-muted);">Anexe seu currículo apenas uma vez para o robô usar como referência de cruzamento.</p>
+        <input type="file" id="cv-file" class="form-control" accept="application/pdf" onchange="extrairTextoPDF()">
+        <textarea id="cv-text" class="form-control" rows="4" placeholder="O robô usará o texto extraído para comparar com as vagas..."></textarea>
       </div>
-
-      <div id="ai-resultado" class="ai-box" style="display:none;"></div>
     </section>
 
-    <!-- CONFIGURAÇÃO IA -->
-    <section id="tab-config" class="tab-pane">
-      <div class="dossier-card">
-        <h3>⚙️ Conectar Chave de API de Inteligência</h3>
-        <div class="form-group">
-          <label>Sua API Key (OpenAI / OpenRouter / Gemini)</label>
-          <input type="password" id="api-key" class="form-control" placeholder="sk-...">
+    <!-- TEMAS -->
+    <section id="tab-theme" class="tab-pane">
+      <div class="card">
+        <h3>🎨 Aparência e Layout</h3>
+        <div class="theme-buttons">
+          <button class="btn-theme" style="background:#6366f1;" onclick="aplicarTema('default')">Dark Purple</button>
+          <button class="btn-theme" style="background:#f4f1ea; color:#000;" onclick="aplicarTema('paper')">Paper Light</button>
+          <button class="btn-theme" style="background:#10b981;" onclick="aplicarTema('emerald')">Emerald</button>
+          <button class="btn-theme" style="background:#ff007f;" onclick="aplicarTema('cyberpunk')">Cyberpunk</button>
         </div>
-        <button class="btn-primary" onclick="salvarApiKey()">💾 Salvar Chave nas Configurações</button>
       </div>
     </section>
   </div>
@@ -149,7 +74,7 @@
       document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
-      evt.currentTarget.classList.add('active');
+      if (evt && evt.currentTarget) evt.currentTarget.classList.add('active');
     }
   </script>
   
